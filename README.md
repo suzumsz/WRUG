@@ -1,6 +1,7 @@
-# flutter_wheregoing
+# WRUG - 어디가지?
 
-A new Flutter application.
+### 소개
+- Flutter를 이용한 전국 체험 마을 예약 어플리케이션
 
 ## Getting Started
 
