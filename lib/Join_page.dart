@@ -42,6 +42,7 @@ class _JoinPageState extends State<JoinPage> {
   String phone;
   String email;
   String password;
+  String passwordCheck;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -218,6 +219,10 @@ class _JoinPageState extends State<JoinPage> {
                         border: OutlineInputBorder(),
                         hintText: "비밀번호를 입력해주세요.",
                       ),
+                      onChanged: (text){
+                        password = text;
+                        //print(password);
+                      },
                       validator: (String value) {
                         if (value.isEmpty) {
                           return '비밀번호를 입력하세요';
@@ -243,12 +248,15 @@ class _JoinPageState extends State<JoinPage> {
                           border: OutlineInputBorder(),
                           hintText: "비밀번호를 한번 더 입력해주세요.",
                         ),
+                        onChanged: (text){
+                          passwordCheck = text;
+                          //print(passwordCheck);
+                        },
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "비밀번호 확인을 입력하세요";
-                          } else if (_passwordController.toString() ==
-                              _password1Controller.toString()) {
-                            return "비밀번호가 일치하지 않습니다";
+                          } else if(password != passwordCheck){
+                            return "비밀번호를 맞게 입력하세요";
                           }
                           return null;
                         }),
