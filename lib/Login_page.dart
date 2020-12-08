@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Container(
                             width: 1000,
-                            child: Text('     이메일',
+                            child: Text('이메일',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontSize: 17)),
                           ),
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Container(
                             width: 1000,
-                            child: Text('     비밀번호',
+                            child: Text('비밀번호',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontSize: 17)),
                           ),
@@ -141,24 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           SizedBox(
                             height: 20.0,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: <Widget>[
-                                Text(_success == null
-                                    ? ''
-                                    : (_success
-                                        ? '사용자 로그인에 성공하였습니다.\n 이메일: ' +
-                                            _userEmail
-                                        : '사용자 로그인에 실패하였습니다')),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                Text(_error == null ? '' : _error),
-                              ],
-                            ),
                           ),
                           Container(
                               width: 1000,

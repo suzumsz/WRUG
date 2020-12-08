@@ -10,7 +10,7 @@ import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(JoinPage());
@@ -46,28 +46,30 @@ class _JoinPageState extends State<JoinPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference user = FirebaseFirestore.instance.collection('user');
 
-  Future<void> _inputUser(){
+  Future<void> _inputUser() {
     return user
-        .doc('$email').set({
-      'name': '$name',
-      'birth': '$birth',
-      'phone': '$phone',
-      'email': '$email',
-      'password': '$password',
-    })
+        .doc('$email')
+        .set({
+          'name': '$name',
+          'birth': '$birth',
+          'phone': '$phone',
+          'email': '$email',
+          'password': '$password',
+        })
         .then((value) => print("User Added"))
         .catchError((error) => print('Failed to add user: $error'));
   }
 
-  Future<void> _inputUsers(){
+  Future<void> _inputUsers() {
     return users
-        .doc('$name').set({
-      'name': '$name',
-      'birth': '$birth',
-      'phone': '$phone',
-      'email': '$email',
-      'password': '$password',
-    })
+        .doc('$name')
+        .set({
+          'name': '$name',
+          'birth': '$birth',
+          'phone': '$phone',
+          'email': '$email',
+          'password': '$password',
+        })
         .then((value) => print("Users Added"))
         .catchError((error) => print('Failed to add users: $error'));
   }
@@ -85,7 +87,7 @@ class _JoinPageState extends State<JoinPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('로그인',
+          title: Text('회원가입',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -111,12 +113,12 @@ class _JoinPageState extends State<JoinPage> {
                 children: <Widget>[
                   Container(
                     width: 1000,
-                    child: Text('   이름',
+                    child: Text('이름',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                       controller: _nameController,
                       inputFormatters: [
@@ -139,12 +141,12 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     width: 1000,
-                    child: Text('   생년월일',
+                    child: Text('생년월일',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                       controller: _birthController,
                       keyboardType: TextInputType.number,
@@ -167,12 +169,12 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     width: 1000,
-                    child: Text('   핸드폰 번호',
+                    child: Text('핸드폰 번호',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                       controller: _phoneController,
                       keyboardType: TextInputType.number,
@@ -195,12 +197,12 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     width: 1000,
-                    child: Text('   이메일',
+                    child: Text('이메일',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -219,12 +221,12 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     width: 1000,
-                    child: Text('   비밀번호',
+                    child: Text('비밀번호',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                       controller: _passwordController,
                       obscureText: true,
@@ -244,12 +246,12 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     width: 1000,
-                    child: Text('   비밀번호 확인',
+                    child: Text('비밀번호 확인',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 17)),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     child: TextFormField(
                         controller: _password1Controller,
                         obscureText: true,
@@ -269,7 +271,7 @@ class _JoinPageState extends State<JoinPage> {
                   ),
                   Container(
                     //margin: const EdgeInsets.only(top: 16.0),
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8),
                     width: 350,
                     height: 75,
                     //alignment: Alignment.topCenter,
@@ -280,7 +282,7 @@ class _JoinPageState extends State<JoinPage> {
                           _inputUser();
                           _inputUsers();
                           Navigator.push(
-                            //DB처리
+                              //DB처리
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
@@ -298,26 +300,8 @@ class _JoinPageState extends State<JoinPage> {
                           borderRadius: BorderRadius.circular(10.0)),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: <Widget>[
-                        Text(_success == null
-                            ? ''
-                            : (_success
-                            ? '사용자 등록에 성공하였습니다.\n 이메일: ' + _userEmail
-                            : '사용자 등록에 실패하였습니다')),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Text(_error == null ? '' : _error),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 350,
-                    height: 25,
+                  SizedBox(
+                    height: 100.0,
                   ),
                 ],
               ),
@@ -345,7 +329,8 @@ class _JoinPageState extends State<JoinPage> {
       final User user = (await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      )).user;
+      ))
+          .user;
 
       if (user != null) {
         setState(() {
