@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'Reservation_Page.dart';
 
 void main() {
   runApp(DetailsPage());
@@ -77,7 +78,13 @@ class DetailsPage extends StatelessWidget {
                           ),
                           RaisedButton(
                             child: Text('예약하기', style: TextStyle(fontSize: 18),),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReservationPage()));
+                            },
                             color: PrimaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
