@@ -37,6 +37,7 @@ android {
         applicationId "com.mjc.flutter_wheregoing"
         minSdkVersion 16
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -56,4 +57,5 @@ flutter {
 
 dependencies{
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.android.support:multidex:1.0.3'
 }

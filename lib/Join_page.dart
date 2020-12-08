@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(JoinPage());
+}
 
 const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
 const SubColor = Color.fromRGBO(241, 230, 250, 1);
@@ -28,6 +36,27 @@ class _JoinPageState extends State<JoinPage> {
   bool _success;
   String _userEmail;
   String _error;
+
+  String name;
+  String birth;
+  String phone;
+  String email;
+  String password;
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+  Future<void> _inputUser(){
+    return users
+        .add({
+      'name': '$name',
+      'birth': '$birth',
+      'phone': '$phone',
+      'email': '$email',
+      'password': '$password',
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print('Failed to add user: $error'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +117,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (value.isEmpty) {
                           return '이름을 입력하세요';
                         }
+                        name = value;
                         return null;
                       },
                     ),
@@ -115,6 +145,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (value.isEmpty) {
                           return '생년월일을 입력하세요';
                         }
+                        birth = value;
                         return null;
                       },
                     ),
@@ -142,6 +173,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (value.isEmpty) {
                           return '핸드폰 번호를 입력하세요';
                         }
+                        phone = value;
                         return null;
                       },
                     ),
@@ -165,6 +197,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (value.isEmpty) {
                           return '이메일을 입력하세요';
                         }
+                        email = value;
                         return null;
                       },
                     ),
@@ -189,6 +222,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (value.isEmpty) {
                           return '비밀번호를 입력하세요';
                         }
+                        password = value;
                         return null;
                       },
                     ),
@@ -230,6 +264,7 @@ class _JoinPageState extends State<JoinPage> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _register();
+                          _inputUser();
                           Navigator.push(
                               //DB처리
                               context,
@@ -296,8 +331,7 @@ class _JoinPageState extends State<JoinPage> {
       final User user = (await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      ))
-          .user;
+      )).user;
 
       if (user != null) {
         setState(() {
