@@ -10,7 +10,7 @@ import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(JoinPage());
@@ -45,15 +45,15 @@ class _JoinPageState extends State<JoinPage> {
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  Future<void> _inputUser(){
+  Future<void> _inputUser() {
     return users
         .add({
-      'name': '$name',
-      'birth': '$birth',
-      'phone': '$phone',
-      'email': '$email',
-      'password': '$password',
-    })
+          'name': '$name',
+          'birth': '$birth',
+          'phone': '$phone',
+          'email': '$email',
+          'password': '$password',
+        })
         .then((value) => print("User Added"))
         .catchError((error) => print('Failed to add user: $error'));
   }
@@ -246,10 +246,10 @@ class _JoinPageState extends State<JoinPage> {
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "비밀번호 확인을 입력하세요";
-                          } //else if (_passwordController !=
-                          //_password1Controller) {
-                          //return "비밀번호가 일치하지 않습니다";
-                          //}
+                          } else if (_passwordController.toString() ==
+                              _password1Controller.toString()) {
+                            return "비밀번호가 일치하지 않습니다";
+                          }
                           return null;
                         }),
                     height: 100,
@@ -331,7 +331,8 @@ class _JoinPageState extends State<JoinPage> {
       final User user = (await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      )).user;
+      ))
+          .user;
 
       if (user != null) {
         setState(() {
