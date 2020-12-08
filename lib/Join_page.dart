@@ -10,7 +10,7 @@ import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<void> main() async {
+Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(JoinPage());
@@ -44,18 +44,32 @@ class _JoinPageState extends State<JoinPage> {
   String password;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference user = FirebaseFirestore.instance.collection('user');
 
-  Future<void> _inputUser() {
-    return users
-        .add({
-          'name': '$name',
-          'birth': '$birth',
-          'phone': '$phone',
-          'email': '$email',
-          'password': '$password',
-        })
+  Future<void> _inputUser(){
+    return user
+        .doc('$email').set({
+      'name': '$name',
+      'birth': '$birth',
+      'phone': '$phone',
+      'email': '$email',
+      'password': '$password',
+    })
         .then((value) => print("User Added"))
         .catchError((error) => print('Failed to add user: $error'));
+  }
+
+  Future<void> _inputUsers(){
+    return users
+        .doc('$name').set({
+      'name': '$name',
+      'birth': '$birth',
+      'phone': '$phone',
+      'email': '$email',
+      'password': '$password',
+    })
+        .then((value) => print("Users Added"))
+        .catchError((error) => print('Failed to add users: $error'));
   }
 
   @override
@@ -246,9 +260,8 @@ class _JoinPageState extends State<JoinPage> {
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "비밀번호 확인을 입력하세요";
-                          } else if (_passwordController.toString() ==
-                              _password1Controller.toString()) {
-                            return "비밀번호가 일치하지 않습니다";
+                          } else if (password != value) {
+                          return "비밀번호가 일치하지 않습니다";
                           }
                           return null;
                         }),
@@ -265,6 +278,7 @@ class _JoinPageState extends State<JoinPage> {
                         if (_formKey.currentState.validate()) {
                           _register();
                           _inputUser();
+                          _inputUsers();
                           Navigator.push(
                               //DB처리
                               context,
@@ -331,8 +345,7 @@ class _JoinPageState extends State<JoinPage> {
       final User user = (await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      ))
-          .user;
+      )).user;
 
       if (user != null) {
         setState(() {
