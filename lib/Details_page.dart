@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'Reservation_Page.dart';
+import 'package:badges/badges.dart';
 
 void main() {
   runApp(DetailsPage());
@@ -26,12 +27,6 @@ class DetailsPage extends StatelessWidget {
   final _title = '체험마을 이름';
   final _story = '체험마을에 대한 설명\n저희 체험마을은 이런 곳 입니다.';
   final _location = '인천광역시 강화군 불은면 강화동로 416';
-  final _tag1 = '체험마을';
-  final _tag2 = '인천광역시';
-  final _tag3 = '인천체험마을';
-  final _tag4 = '강화도';
-  final _tag5 = '감자캐기';
-  final _tag6 = '감자';
 
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
@@ -71,10 +66,10 @@ class DetailsPage extends StatelessWidget {
                             height: 10.0,
                           ),
                           Container(
-                            width: 200,
-                            child: Text('$_title', textAlign: TextAlign.start,
+                            width: 230,
+                            child: Text('$_title', textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    fontSize: 35)),
+                                    fontSize: 30)),
                           ),
                           RaisedButton(
                             child: Text('예약하기', style: TextStyle(fontSize: 18),),
@@ -96,55 +91,75 @@ class DetailsPage extends StatelessWidget {
                         height: 10.0,
                       ),
                       Container(
-                        width: 350.0,
+                        width: 300.0,
                         child: Text('$_story', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                       ),
                       SizedBox(
-                        height: 40.0,
+                        height: 30.0,
                       ),
                       Container(
-                          width: 1000,
+                          width: 320,
                           child: Row(
                             children: <Widget> [
                               Icon(Icons.location_on, color: Color.fromRGBO(137,71,184,1),),
                               Text('$_location', style: TextStyle(color: Color.fromRGBO(137,71,184,1), fontWeight: FontWeight.bold, fontSize: 16),)
                             ],
                           )
-                      ),Container(
-                          height: 100,
-                          width: 800,
-                          child: Column(
-                            children: <Widget> [
-                              Row(
-                                children: <Widget> [
-                                  FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag1', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag2', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag3', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget> [
-                                  FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag4', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag5', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),FlatButton(
-                                    onPressed: null,
-                                    child: Text('$_tag6', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('체험마을', style: TextStyle(color: Colors.white)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('인천광역시', style: TextStyle(color: Colors.white)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('인천체험마을', style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('강화도', style: TextStyle(color: Colors.white)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('감자캐기', style: TextStyle(color: Colors.white)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Chip(
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: PrimaryColor,
+                            label: Text('감자', style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 20.0,
