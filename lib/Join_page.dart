@@ -10,7 +10,7 @@ import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<void> main() async {
+Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(JoinPage());
@@ -42,21 +42,34 @@ class _JoinPageState extends State<JoinPage> {
   String phone;
   String email;
   String password;
-  String passwordCheck;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference user = FirebaseFirestore.instance.collection('user');
 
-  Future<void> _inputUser() {
-    return users
-        .add({
-          'name': '$name',
-          'birth': '$birth',
-          'phone': '$phone',
-          'email': '$email',
-          'password': '$password',
-        })
+  Future<void> _inputUser(){
+    return user
+        .doc('$email').set({
+      'name': '$name',
+      'birth': '$birth',
+      'phone': '$phone',
+      'email': '$email',
+      'password': '$password',
+    })
         .then((value) => print("User Added"))
         .catchError((error) => print('Failed to add user: $error'));
+  }
+
+  Future<void> _inputUsers(){
+    return users
+        .doc('$name').set({
+      'name': '$name',
+      'birth': '$birth',
+      'phone': '$phone',
+      'email': '$email',
+      'password': '$password',
+    })
+        .then((value) => print("Users Added"))
+        .catchError((error) => print('Failed to add users: $error'));
   }
 
   @override
@@ -219,10 +232,6 @@ class _JoinPageState extends State<JoinPage> {
                         border: OutlineInputBorder(),
                         hintText: "비밀번호를 입력해주세요.",
                       ),
-                      onChanged: (text){
-                        password = text;
-                        //print(password);
-                      },
                       validator: (String value) {
                         if (value.isEmpty) {
                           return '비밀번호를 입력하세요';
@@ -248,15 +257,11 @@ class _JoinPageState extends State<JoinPage> {
                           border: OutlineInputBorder(),
                           hintText: "비밀번호를 한번 더 입력해주세요.",
                         ),
-                        onChanged: (text){
-                          passwordCheck = text;
-                          //print(passwordCheck);
-                        },
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "비밀번호 확인을 입력하세요";
-                          } else if(password != passwordCheck){
-                            return "비밀번호를 맞게 입력하세요";
+                          } else if (password != value) {
+                            return "비밀번호가 일치하지 않습니다";
                           }
                           return null;
                         }),
@@ -273,8 +278,9 @@ class _JoinPageState extends State<JoinPage> {
                         if (_formKey.currentState.validate()) {
                           _register();
                           _inputUser();
+                          _inputUsers();
                           Navigator.push(
-                              //DB처리
+                            //DB처리
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
@@ -300,8 +306,8 @@ class _JoinPageState extends State<JoinPage> {
                         Text(_success == null
                             ? ''
                             : (_success
-                                ? '사용자 등록에 성공하였습니다.\n 이메일: ' + _userEmail
-                                : '사용자 등록에 실패하였습니다')),
+                            ? '사용자 등록에 성공하였습니다.\n 이메일: ' + _userEmail
+                            : '사용자 등록에 실패하였습니다')),
                         SizedBox(
                           height: 16,
                         ),
@@ -339,8 +345,7 @@ class _JoinPageState extends State<JoinPage> {
       final User user = (await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      ))
-          .user;
+      )).user;
 
       if (user != null) {
         setState(() {
