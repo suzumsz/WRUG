@@ -230,13 +230,12 @@ class _JoinPageState extends State<JoinPage> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _register();
+                          Navigator.push(
+                              //DB처리
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
                         }
-
-                        Navigator.push(
-                            //DB처리
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
                       },
                       child: Text(
                         '회원가입',
