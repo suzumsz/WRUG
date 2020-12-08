@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'Login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 void main() {
   runApp(JoinPage());
 }
@@ -42,6 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String email = '';
   String password = '';
   String passwordCheck ='';
+
+  String _userEmail;
+  String _error;
 
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -250,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: RaisedButton(
               onPressed: () {
 
-                // _register();
+                _register();
                 // _addStore();
 
                 if (!_formKey.currentState.validate()) {
@@ -303,20 +308,28 @@ class _MyHomePageState extends State<MyHomePage> {
   //   );
   // }
   
-  // void _register() async{
-  //   final AuthResult result = await FirebaseAuth.instance
-  //       .createUserWithEmailAndPassword(
-  //     email: email,
-  //     password: password,
-  //   );
-  //   final FirebaseUser user = result.user;
-  //
-  //   if (user==null){
-  //     print('회원가입 다시 시도');
-  //   }else{
-  //     print('회원가입 성공');
-  //   }
-  // }
+  void _register() async{
+    try {
+      final User user = (await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      )).user;
+
+      if (user != null) {
+        setState(() {
+          _userEmail = user.email;
+        });
+      } else {
+        setState(() {
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        _error = e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

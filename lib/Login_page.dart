@@ -3,12 +3,13 @@ import 'main.dart';
 import 'Join_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 void main() {
   runApp(LoginPage());
 }
 
 class LoginPage extends StatelessWidget {
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   String _email;
@@ -128,14 +129,15 @@ class LoginPage extends StatelessWidget {
                             if (!_formKey.currentState.validate()) {
                               return;
                             }
-                            /* Navigator.push(
+                            Auth();
+                            Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) =>
                                         MyApp()));
                                 _formKey.currentState.save();
 
                                 print(_email);
-                                print(_password);*/
+                                print(_password);
 
                             // var authHandler = new Auth();
                             // authHandler
@@ -185,37 +187,27 @@ class LoginPage extends StatelessWidget {
                               )
                             ],
                           )),
-                    ])))));
+                    ]
+                    )
+                )
+            )
+        ),
+    );
+  }
+  void Auth() async {
+
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      )).user;
+
+      if (user != null) {
+        _email = user.email;
+      } else {
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
-
-// class Auth {
-//   final FirebaseAuth auth = FirebaseAuth.instance;
-//
-//   Future<FirebaseUser> handleSignInEmail(String email, String password) async {
-//     AuthResult result =
-//     await auth.signInWithEmailAndPassword(email: email, password: password);
-//     final FirebaseUser user = result.user;
-//
-//     assert(user != null);
-//     assert(await user.getIdToken() != null);
-//
-//     final FirebaseUser currentUser = await auth.currentUser();
-//     assert(user.uid == currentUser.uid);
-//
-//     print('signInEmail succeeded: $user');
-//
-//     return user;
-//   }
-//
-//   Future<FirebaseUser> handleSignUp(email, password) async {
-//     AuthResult result = await auth.createUserWithEmailAndPassword(
-//         email: email, password: password);
-//     final FirebaseUser user = result.user;
-//
-//     assert(user != null);
-//     assert(await user.getIdToken() != null);
-//
-//     return user;
-//   }
-// }
