@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -55,14 +56,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
                             height: 10.0,
                           ),
                           Container(
                             width: 1000,
-                            child: Text('이메일',
+                            child: Text('  이메일',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontSize: 17)),
                           ),
@@ -70,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 10.0,
                           ),
                           Container(
+                            alignment: Alignment.center,
                             width: 350.0,
                             child: TextFormField(
                               controller: _emailController,
@@ -90,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Container(
                             width: 1000,
-                            child: Text('비밀번호',
+                            child: Text('  비밀번호',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontSize: 17)),
                           ),
@@ -117,21 +119,22 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: 30.0,
                           ),
-                          Container(
+                         Container(
                             width: 350.0,
                             height: 60.0,
                             child: RaisedButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   _signIn();
-                                  Navigator.push(
+                                 /* Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MyApp()));
+                                          builder: (context) => MyApp())); */
                                 }
                               },
                               child:
-                                  Text('로그인', style: TextStyle(fontSize: 15)),
+                                  Text('로그인',
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
                               textColor: Colors.white,
                               color: PrimaryColor,
                               shape: RoundedRectangleBorder(
@@ -139,6 +142,28 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+
+                          // 사용자 로그인 처리 결과
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: <Widget>[
+                                Text(_success == null
+                                    ? ''
+                                    : (_success
+                                    ? ''
+                                    : '로그인에 실패하였습니다'
+                                )
+                                ),
+                                SizedBox(height: 16,),
+                                //Text(_error == null
+                                //    ? ''
+                                //    : _error),
+                              ],
+                            ),
+                          ),
+
                           SizedBox(
                             height: 20.0,
                           ),
