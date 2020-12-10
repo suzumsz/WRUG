@@ -262,7 +262,7 @@ class MainPage extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               // 로그인 여부에 따른 DrawerHeader
-              if (app.user == null) Login_Signup() else Login_done(),
+              if (_currentUser.email == null) Login_Signup() else Login_done(),
 
               ListTile(
                 leading: Icon(Icons.home, color: Colors.white),
@@ -290,7 +290,10 @@ class MainPage extends StatelessWidget {
               // else Login_Signups(),
 
               // 로그인 전
-              if (app.user == null) Login_Signups() else Login_dones(),
+              if (_currentUser.email == null)
+                Login_Signups()
+              else
+                Login_dones(),
             ],
           ),
         ),

@@ -119,22 +119,23 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: 30.0,
                           ),
-                         Container(
+                          Container(
                             width: 350.0,
                             height: 60.0,
                             child: RaisedButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   _signIn();
-                                 /* Navigator.push(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MyApp())); */
+                                          builder: (context) => MyApp()));
                                 }
                               },
-                              child:
-                                  Text('로그인',
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0)),
+                              child: Text('로그인',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0)),
                               textColor: Colors.white,
                               color: PrimaryColor,
                               shape: RoundedRectangleBorder(
@@ -151,12 +152,10 @@ class _LoginPageState extends State<LoginPage> {
                               children: <Widget>[
                                 Text(_success == null
                                     ? ''
-                                    : (_success
-                                    ? ''
-                                    : '로그인에 실패하였습니다'
-                                )
+                                    : (_success ? '' : '로그인에 실패하였습니다')),
+                                SizedBox(
+                                  height: 16,
                                 ),
-                                SizedBox(height: 16,),
                                 //Text(_error == null
                                 //    ? ''
                                 //    : _error),
