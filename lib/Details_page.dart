@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'Reservation_Page.dart';
+import 'main.dart';
 import 'package:badges/badges.dart';
 
 void main() {

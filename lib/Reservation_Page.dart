@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wheregoing/Details_page.dart';
 import 'Details_page.dart';
 import 'Check_page.dart';
+import 'main.dart';
 import 'package:intl/intl.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(ReservationPage());
 }
 
@@ -24,6 +30,13 @@ class ReservationPage extends StatelessWidget {
   }
 }
 
+class user {
+  String name;
+  String email;
+  String phone;
+  user(this.name, this.email,this.phone);
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -36,9 +49,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String name = '';
-  String phone = '';
-  String email = '';
+  String name;
+  String phone;
+  String email;
   String date = '';
   String finalDate = '';
   int people = 0;
@@ -47,9 +60,49 @@ class _MyHomePageState extends State<MyHomePage> {
   String Money = '';
 
   final formatCurrency = new NumberFormat.simpleCurrency(locale: "ko_KR", name: "", decimalDigits: 0);
+  final _currentUser = FirebaseAuth.instance.currentUser;
+  final _firestore = Firestore.instance;
 
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
+  Widget _buildItemWidget(DocumentSnapshot doc, int i) {
+    final users = user(doc['name'], doc['email'], doc['phone']);
+
+    user(users.name, users.email, users.phone);
+
+    name = users.name.toString();
+    phone = users.phone.toString();
+    email = users.email.toString();
+  }
+
+  Widget _getDB(int i) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          final documents = snapshot.data;
+          return Container(child: _buildItemWidget(documents, i));
+        });
+  }
+
+  CollectionReference Reservation = FirebaseFirestore.instance.collection('Reservation');
+
+  Future<void> _inputUser() {
+    return Reservation
+        .doc('$name')
+        .set({
+      'name': '$name',
+      'phone': '$phone',
+      'date': '$finalDate',
+      'people': '$people',
+    })
+        .then((value) => print("Reservation Added"))
+        .catchError((error) => print('Failed to add user: $error'));
+  }
 
 
   void _showDialog() {
@@ -147,6 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
         scrollDirection: Axis.vertical,
         controller: _scrollController,
         children: <Widget>[
+          _getDB(1),
           Container(
             width: 370,
             height: 100,
@@ -175,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       leading: Icon(
                           Icons.account_circle,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('문우석',
+                      title: Text('$name',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.black54)),
@@ -192,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       leading: Icon(
                           Icons.alternate_email,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('qwer12@naver.com',
+                      title: Text('$email',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.black54)),
@@ -209,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       leading: Icon(
                           Icons.phone,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('010-1234-5678',
+                      title: Text('$phone',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.black54)),
@@ -305,6 +359,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _showDialog();
                 }else {
                   String test = 'test';
+                  _inputUser();
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>
@@ -338,6 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _getDB(1);
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),
@@ -366,8 +422,6 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 0.0,
         ),
         body: _buildBody(),
-
-
       ),
     );
   }

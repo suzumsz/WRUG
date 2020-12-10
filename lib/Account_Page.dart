@@ -1,8 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(AccountPage());
+}
+
+class user {
+  String name;
+  String email;
+  String phone;
+  String birth;
+  user(this.name, this.email,this.phone,this.birth);
 }
 
 class AccountPage extends StatelessWidget {
@@ -35,12 +49,39 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final _currentUser = FirebaseAuth.instance.currentUser;
+  final _firestore = Firestore.instance;
+
   final ScrollController _scrollController = ScrollController();
 
-  final _name = '도메인';
-  final _phone = '010-0000-0000';
-  final _birth = '961111';
-  final _email = 'domain@domain.com';
+  String _name;
+  String _phone;
+  String _birth;
+  String _email;
+
+  Widget _buildItemWidget(DocumentSnapshot doc, int i) {
+    final users = user(doc['name'], doc['email'], doc['phone'],doc['birth']);
+
+    user(users.name, users.email, users.phone,users.phone);
+
+    _name = users.name;
+    _phone = users.phone;
+    _birth = users.birth;
+    _email = users.email;
+  }
+
+  Widget _getDB(int i) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          final documents = snapshot.data;
+          return Expanded(child: _buildItemWidget(documents, i));
+        });
+  }
+
 
   Widget _buildBody() {
     return ListView(
