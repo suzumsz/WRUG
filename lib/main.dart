@@ -6,6 +6,7 @@ import 'Account_Page.dart';
 import 'Details_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,16 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
+class user {
+  String name;
+  String email;
+
+  user(this.name, this.email);
+}
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final _currentUser = FirebaseAuth.instance.currentUser;
+final _firestore = Firestore.instance;
 
 final _id = 'abc@naver.com';
 final name = 'abcde';
@@ -34,6 +44,41 @@ class MyApp extends StatelessWidget {
       home: MainPage(title: '메인 페이지'),
     );
   }
+}
+
+Widget _buildItemWidget(DocumentSnapshot docs, int i) {
+  final users = user(docs['name'], docs['email']);
+
+  List<String> name = users.name.split(",");
+
+  switch (i) {
+    case 1:
+      {
+        return Text(
+          users.name + '\n' + users.email,
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+
+    default:
+  }
+}
+
+Widget _getDB(int i) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        final documents = snapshot.data;
+        return Expanded(child: _buildItemWidget(documents, i));
+      });
 }
 
 class AppState {
@@ -58,13 +103,15 @@ class MainPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color.fromRGBO(137, 71, 184, 1),
         ),
-        child: Text(
+        child: _getDB(1),
+
+        /*Text(
           '\n$name\n$_id',
           style: TextStyle(
             fontSize: 24,
             color: Colors.white,
           ),
-        ),
+        ),*/
       );
     }
 
@@ -215,7 +262,7 @@ class MainPage extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               // 로그인 여부에 따른 DrawerHeader
-              if (app.user == null) Login_Signup() else Login_done(),
+              if (app.user == null) Login_done() else Login_Signup(),
 
               ListTile(
                 leading: Icon(Icons.home, color: Colors.white),
@@ -243,7 +290,7 @@ class MainPage extends StatelessWidget {
               // else Login_Signups(),
 
               // 로그인 전
-              if (app.user == null) Login_Signups() else Login_dones(),
+              if (app.user == null) Login_dones() else Login_Signups(),
             ],
           ),
         ),
