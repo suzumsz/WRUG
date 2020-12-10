@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
 Widget _buildItemWidget(DocumentSnapshot docs, int i) {
   final users = user(docs['name'], docs['email']);
 
-  List<String> name = users.name.split(",");
+  user(users.name, users.email);
 
   switch (i) {
     case 1:
@@ -262,7 +262,7 @@ class MainPage extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               // 로그인 여부에 따른 DrawerHeader
-              if (app.user == null) Login_done() else Login_Signup(),
+              if (app.user == null) Login_Signup() else Login_done(),
 
               ListTile(
                 leading: Icon(Icons.home, color: Colors.white),
@@ -290,7 +290,7 @@ class MainPage extends StatelessWidget {
               // else Login_Signups(),
 
               // 로그인 전
-              if (app.user == null) Login_dones() else Login_Signups(),
+              if (app.user == null) Login_Signups() else Login_dones(),
             ],
           ),
         ),
