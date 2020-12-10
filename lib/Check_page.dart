@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(CheckPage());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
+
+class user {
+  String name;
+  String email;
+  String phone;
+
+  user(this.name, this.email, this.phone);
+}
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _currentUser = FirebaseAuth.instance.currentUser;
+// ignore: deprecated_member_use
+final _firestore = Firestore.instance;
 
 class CheckPage extends StatelessWidget {
   // This widget is the root of your application.
@@ -21,6 +39,64 @@ class CheckPage extends StatelessWidget {
   }
 }
 
+Widget _buildItemWidget(DocumentSnapshot docs, int i) {
+  final users = user(docs['name'], docs['email'], docs['phone']);
+
+  user(users.name, users.email, users.email);
+
+  switch (i) {
+    case 1:
+      {
+        return Text(
+          users.name,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+    case 2:
+      {
+        return Text(
+          users.email,
+          style: TextStyle(
+            color: Colors.black26,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+    case 3:
+      {
+        return Text(
+          users.phone,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+
+    default:
+  }
+}
+
+Widget _getDB(int i) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        final documents = snapshot.data;
+        return Expanded(child: _buildItemWidget(documents, i));
+      });
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -33,7 +109,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final ScrollController _scrollController = ScrollController();
 
   Widget _buildBody() {
@@ -41,171 +116,139 @@ class _MyHomePageState extends State<MyHomePage> {
         scrollDirection: Axis.vertical,
         controller: _scrollController,
         children: <Widget>[
-      Container(
-      child: Column(
-        children: [
-        SizedBox(
-        height: 20.0,
-      ),
-      ListTile(
-        leading: Icon(
-            Icons.account_circle_outlined,
-            size: 50,
-            color: Colors.black54),
-        title: Text('김수정',
-            style: TextStyle(
-                fontSize: 18)),
-        subtitle: Text('tnwjd@google.com',
-            style: TextStyle(
-                color: Colors.black26)),
-        trailing: RaisedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>
-                    MyApp()));
-          },
-          child: Text('예약정보수정',
-              style: TextStyle(
-                  fontSize: 13)),
-          textColor: Colors.white,
-          color: Color.fromRGBO(168, 114, 207, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 10.0,
-      ),
-      Container(
-        width: 370,
-        height: 480,
-        child: Card(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(
-                    Icons.account_circle,
-                    color: Color.fromRGBO(137, 71, 184, 1)),
-                title: Text('한송희',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54)),
-                subtitle: Text('예약자 이름',
-                    style: TextStyle(
-                        color: Colors.black26)),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Divider(height: 1.0),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(
-                    Icons.phone,
-                    color: Color.fromRGBO(137, 71, 184, 1)),
-                title: Text('010-1234-5678',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54)),
-                subtitle: Text('핸드폰',
-                    style: TextStyle(
-                        color: Colors.black26)),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Divider(height: 1.0),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(
-                    Icons.calendar_today,
-                    color: Color.fromRGBO(137, 71, 184, 1)),
-                title: Text('2020/10/30',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54)),
-                subtitle: Text('날짜',
-                    style: TextStyle(
-                        color: Colors.black26)),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Divider(height: 1.0),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(
-                    Icons.supervisor_account_rounded,
-                    color: Color.fromRGBO(137, 71, 184, 1)),
-                title: Text('4명',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54)),
-                subtitle: Text('인원',
-                    style: TextStyle(
-                        color: Colors.black26)),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Divider(height: 1.0),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(
-                    Icons.check,
-                    color: Color.fromRGBO(137, 71, 184, 1)),
-                title: Text('결제완료',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54)),
-                subtitle: Text('결제여부',
-                    style: TextStyle(
-                        color: Colors.black26)),
-              ),
-            ],
-          ),
-        ),
-      ),
           Container(
-          width: 370,
-            height: 400,
-            child: Card(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.0,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20.0,
+                ),
+                ListTile(
+                  leading: Icon(Icons.account_circle_outlined,
+                      size: 50, color: Colors.black54),
+                  title: _getDB(1),
+                  subtitle: _getDB(2),
+                  trailing: RaisedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MyApp()));
+                    },
+                    child: Text('예약정보수정', style: TextStyle(fontSize: 13)),
+                    textColor: Colors.white,
+                    color: Color.fromRGBO(168, 114, 207, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
-                  ListTile(
-                    leading: Icon(
-                        Icons.map_outlined,
-                        color: Color.fromRGBO(137, 71, 184, 1)),
-                    title: Text('위치',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54)),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  width: 370,
+                  height: 480,
+                  child: Card(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.account_circle,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: _getDB(1),
+                          subtitle: Text('예약자 이름',
+                              style: TextStyle(color: Colors.black26)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Divider(height: 1.0),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.phone,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: _getDB(3),
+                          subtitle: Text('핸드폰',
+                              style: TextStyle(color: Colors.black26)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Divider(height: 1.0),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.calendar_today,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: Text('2020/10/30',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black54)),
+                          subtitle: Text('날짜',
+                              style: TextStyle(color: Colors.black26)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Divider(height: 1.0),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.supervisor_account_rounded,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: Text('4명',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black54)),
+                          subtitle: Text('인원',
+                              style: TextStyle(color: Colors.black26)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Divider(height: 1.0),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.check,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: Text('결제완료',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black54)),
+                          subtitle: Text('결제여부',
+                              style: TextStyle(color: Colors.black26)),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  width: 370,
+                  height: 400,
+                  child: Card(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.map_outlined,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: Text('위치',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black54)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-      ],
-    ),
-    ),
-    ]
-    );
+        ]);
   }
 
   @override
@@ -229,11 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: IconButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MyApp()
-                    )
-                );
+                    context, MaterialPageRoute(builder: (context) => MyApp()));
               },
               color: Colors.black45,
               icon: Icon(Icons.arrow_back)),
@@ -243,4 +282,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
