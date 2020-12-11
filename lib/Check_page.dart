@@ -48,6 +48,7 @@ class CheckPage extends StatelessWidget {
   }
 }
 
+// 사용자 DB
 Widget _buildItemWidget(DocumentSnapshot docs, int i) {
   final users = user(docs['name'], docs['email'], docs['phone']);
 
@@ -106,6 +107,7 @@ Widget _getDB(int i) {
       });
 }
 
+// 사용자 예약 변경 사항 DB - 날짜 / 인원
 Widget _buildItemDate(DocumentSnapshot doc, int i) {
   final Reservation = res(doc['date'], doc['people']);
 
