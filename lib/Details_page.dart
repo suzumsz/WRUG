@@ -10,7 +10,7 @@ void main() {
 
 class DetailsPage extends StatelessWidget {
 
-  Swiper imageSlider(context){
+  Swiper imageSlider(context){//NETWork image 캐쉬
     return new Swiper(
       autoplay: true,
       itemBuilder: (BuildContext context, int index){

@@ -24,8 +24,8 @@ class user {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _currentUser = FirebaseAuth.instance.currentUser;
 final _firestore = Firestore.instance;
-
-final _id = 'abc@naver.com';
+//provider패키지 이용
+var _email;
 final name = 'abcde';
 final _location = '인천광역시 강화군 불은면 강화동로 416';
 final app = AppState(false, null);
@@ -88,6 +88,7 @@ Widget _buildItemWidget(DocumentSnapshot docs, int i) {
   switch (i) {
     case 1:
       {
+        _email = users.email;
         return Text(
           users.name + '\n' + users.email,
           style: TextStyle(
@@ -121,7 +122,7 @@ class AppState {
   AppState(this.loading, this.user);
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
   MainPage({Key key, this.title}) : super(key: key);
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -229,7 +230,7 @@ class MainPage extends StatelessWidget {
           // 로그아웃 처리
           _auth.signOut();
           checkIn = null;
-
+          print(_currentUser.email);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyApp()));
         },

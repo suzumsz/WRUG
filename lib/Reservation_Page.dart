@@ -15,7 +15,7 @@ Future<void> main() async {
   runApp(ReservationPage());
 }
 
-class ReservationPage extends StatelessWidget {
+class ReservationPage extends StatelessWidget { //StatefulWidget
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
