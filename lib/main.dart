@@ -29,8 +29,42 @@ final _id = 'abc@naver.com';
 final name = 'abcde';
 final _location = '인천광역시 강화군 불은면 강화동로 416';
 final app = AppState(false, null);
+String checkIn;
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.blue,
+          accentColor: Colors.purple,
+        ),
+        home: MainPage(title: '메인 페이지'),
+      );
+    }
+  }
+
+  MyApp.init(){
+    checkIn = 'success';
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.blue,
+          accentColor: Colors.purple,
+        ),
+        home: MainPage(title: '메인 페이지'),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -198,6 +232,7 @@ class MainPage extends StatelessWidget {
         onTap: () {
           // 로그아웃 처리
           _auth.signOut();
+          checkIn = null;
 
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -244,19 +279,19 @@ class MainPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              if(app.user == null) Signin() else _getDB(1),
+              if(checkIn == null) Signin() else _getDB(1),
 
               mainBtn(),
 
-              if (app.user != null) accountBtn() else registerBtn(),
+              if (checkIn != null) accountBtn() else registerBtn(),
 
               // 로그인 여부에 따른 예약확인 유무
-              if (app.user != null) fact_check(),
+              if (checkIn != null) fact_check(),
 
-              if (app.user != null) box(200) else box(250),
+              if (checkIn != null) box(200) else box(250),
 
               // 로그인 전
-              if (app.user == null) loginBtn() else logoutBtn(),
+              if (checkIn == null) loginBtn() else logoutBtn(),
             ],
           ),
         ),

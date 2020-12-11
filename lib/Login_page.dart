@@ -125,11 +125,13 @@ class _LoginPageState extends State<LoginPage> {
                             child: RaisedButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
+
                                   _signIn();
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MyApp()));
+                                          builder: (context) => MyApp.init())
+                                  );
                                 }
                               },
                               child: Text('로그인',
