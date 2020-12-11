@@ -8,7 +8,12 @@ void main() {
   runApp(DetailsPage());
 }
 
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
+  @override
+  _DetailsPage createState() => _DetailsPage();
+}
+
+class _DetailsPage extends State<DetailsPage>{
 
   Swiper imageSlider(context){//NETWork image 캐쉬
     return new Swiper(
@@ -52,7 +57,8 @@ class DetailsPage extends StatelessWidget {
               elevation: 0.0,
               leading: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => MyApp()));
                   },
                   color: Colors.black45,
                   icon: Icon(Icons.arrow_back)),
@@ -111,7 +117,7 @@ class DetailsPage extends StatelessWidget {
                         height: 10.0,
                       ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Chip(
                             padding: EdgeInsets.all(0),
@@ -176,4 +182,5 @@ class DetailsPage extends StatelessWidget {
         )
     );
   }
+
 }

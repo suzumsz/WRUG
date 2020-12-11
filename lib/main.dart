@@ -32,39 +32,6 @@ final app = AppState(false, null);
 String checkIn;
 
 class MyApp extends StatelessWidget {
-  MyApp() {
-    @override
-    Widget build(BuildContext context) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          accentColor: Colors.purple,
-        ),
-        home: MainPage(title: '메인 페이지'),
-      );
-    }
-  }
-
-  MyApp.init() {
-    checkIn = 'success';
-    @override
-    Widget build(BuildContext context) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          accentColor: Colors.purple,
-        ),
-        home: MainPage(title: '메인 페이지'),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,7 +55,7 @@ Widget _buildItemWidget(DocumentSnapshot docs, int i) {
   switch (i) {
     case 1:
       {
-        _email = users.email;
+
         return Text(
           users.name + '\n' + users.email,
           style: TextStyle(
@@ -122,11 +89,17 @@ class AppState {
   AppState(this.loading, this.user);
 }
 
-class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
+class MainPage extends StatefulWidget {//StatefullWidget으로 바꾸기
+  String title;
   MainPage({Key key, this.title}) : super(key: key);
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String title;
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
@@ -252,8 +225,8 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
           children: <Widget>[
             new Center(
                 child: new Column(
-              children: <Widget>[],
-            )),
+                  children: <Widget>[],
+                )),
             Positioned(
               //left: 0,
               //top: 20,
@@ -301,7 +274,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
             child: Wrap(
               children: List<Widget>.generate(
                 1,
-                (int index) {
+                    (int index) {
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: FractionallySizedBox(
@@ -439,7 +412,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -493,7 +466,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -509,7 +482,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -563,7 +536,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -579,7 +552,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -633,7 +606,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -649,7 +622,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -703,7 +676,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -724,7 +697,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -778,7 +751,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -799,7 +772,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -853,7 +826,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -874,7 +847,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -928,7 +901,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -949,7 +922,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -1003,7 +976,7 @@ class MainPage extends StatelessWidget { //StatefullWidget으로 바꾸기
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
