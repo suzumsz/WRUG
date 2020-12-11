@@ -18,8 +18,17 @@ class user {
   user(this.name, this.email, this.phone);
 }
 
+class res {
+  String date;
+  String people;
+
+  res(this.date, this.people);
+}
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _currentUser = FirebaseAuth.instance.currentUser;
+var _todoController = TextEditingController();
+
 // ignore: deprecated_member_use
 final _firestore = Firestore.instance;
 
@@ -42,7 +51,7 @@ class CheckPage extends StatelessWidget {
 Widget _buildItemWidget(DocumentSnapshot docs, int i) {
   final users = user(docs['name'], docs['email'], docs['phone']);
 
-  user(users.name, users.email, users.email);
+  user(users.name, users.email, users.phone);
 
   switch (i) {
     case 1:
@@ -94,6 +103,55 @@ Widget _getDB(int i) {
         }
         final documents = snapshot.data;
         return Expanded(child: _buildItemWidget(documents, i));
+      });
+}
+
+Widget _buildItemDate(DocumentSnapshot doc, int i) {
+  final Reservation = res(doc['date'], doc['people']);
+
+  res(Reservation.date, Reservation.people);
+
+  switch (i) {
+    case 1:
+      {
+        return Text(
+          Reservation.date,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+    case 2:
+      {
+        return Text(
+          Reservation.people + '명',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+    default:
+  }
+}
+
+Widget _resDB(int i) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: _firestore
+          .collection("Reservation")
+          .doc(_currentUser.email)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        final documents = snapshot.data;
+        return Container(child: _buildItemDate(documents, i));
       });
 }
 
@@ -183,9 +241,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('2020/10/30',
+                          title: _resDB(1),
+                          /*Text('$date',
                               style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),
+                                  fontSize: 18, color: Colors.black54)),*/
                           subtitle: Text('날짜',
                               style: TextStyle(color: Colors.black26)),
                         ),
@@ -199,9 +258,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('4명',
+                          title: _resDB(2),
+                          /*Text('4명',
                               style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),
+                                  fontSize: 18, color: Colors.black54)),*/
                           subtitle: Text('인원',
                               style: TextStyle(color: Colors.black26)),
                         ),
@@ -220,26 +280,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontSize: 18, color: Colors.black54)),
                           subtitle: Text('결제여부',
                               style: TextStyle(color: Colors.black26)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 370,
-                  height: 400,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.map_outlined,
-                              color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('위치',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),
                         ),
                       ],
                     ),

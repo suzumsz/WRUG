@@ -15,7 +15,8 @@ Future<void> main() async {
   runApp(ReservationPage());
 }
 
-class ReservationPage extends StatelessWidget { //StatefulWidget
+class ReservationPage extends StatelessWidget {
+  //StatefulWidget
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class user {
   String name;
   String email;
   String phone;
-  user(this.name, this.email,this.phone);
+  user(this.name, this.email, this.phone);
 }
 
 class MyHomePage extends StatefulWidget {
@@ -59,13 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int totalMoney = 0;
   String Money = '';
 
-  final formatCurrency = new NumberFormat.simpleCurrency(locale: "ko_KR", name: "", decimalDigits: 0);
+  final formatCurrency = new NumberFormat.simpleCurrency(
+      locale: "ko_KR", name: "", decimalDigits: 0);
   final _currentUser = FirebaseAuth.instance.currentUser;
   final _firestore = Firestore.instance;
 
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
 
   Widget _buildItemWidget(DocumentSnapshot doc, int i) {
     final users = user(doc['name'], doc['email'], doc['phone']);
@@ -79,7 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _getDB(int i) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+        stream:
+            _firestore.collection("user").doc(_currentUser.email).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -89,32 +91,31 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  CollectionReference Reservation = FirebaseFirestore.instance.collection('Reservation');
+  CollectionReference Reservation =
+      FirebaseFirestore.instance.collection('Reservation');
 
   Future<void> _inputUser() {
-    return Reservation
-        .doc('$name')
+    return Reservation.doc('$email')
         .set({
-      'name': '$name',
-      'phone': '$phone',
-      'date': '$finalDate',
-      'people': '$people',
-    })
+          'email': '$email',
+          'name': '$name',
+          'phone': '$phone',
+          'date': '$finalDate',
+          'people': '$people',
+        })
         .then((value) => print("Reservation Added"))
         .catchError((error) => print('Failed to add user: $error'));
   }
-
 
   void _showDialog() {
     showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text('$error입력해주세요'),
           );
-        }
-    );
+        });
   }
 
   void _showDatePicker() {
@@ -123,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2021),
-      builder: (BuildContext context, Widget child){
+      builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.dark(),
           child: child,
@@ -138,24 +139,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _checkPeople(){
+  void _checkPeople() {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 CupertinoButton(
-                  child: Text('닫기', style:TextStyle(color: Colors.red),textAlign: TextAlign.right,),
-                  onPressed: (){
+                  child: Text(
+                    '확인',
+                    style: TextStyle(color: Colors.red),
+                    textAlign: TextAlign.right,
+                  ),
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
                   padding: const EdgeInsets.symmetric(
-                    //horizontal: 16.0,
-                    //vertical: 5.0,
-                  ),
+                      //horizontal: 16.0,
+                      //vertical: 5.0,
+                      ),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -165,10 +170,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 170,
                         child: CupertinoPicker(
                           itemExtent: 32,
-                          onSelectedItemChanged: (int index){
-                            people = index+1;
-                            totalMoney = people*16000;
-                            Money = (formatCurrency.format(totalMoney)).toString();
+                          onSelectedItemChanged: (int index) {
+                            people = index + 1;
+                            totalMoney = people * 16000;
+                            Money =
+                                (formatCurrency.format(totalMoney)).toString();
                           },
                           children: <Widget>[
                             Center(child: Text('1명')),
@@ -208,9 +214,18 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    leading: Image.network("https://images.unsplash.com/photo-1595445364671-15205e6c380c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=764&q=80", scale: 1,),
-                    title: Text('체험마을 이름', style: TextStyle(fontSize: 30),),
-                    subtitle: Text('체험마을 주소 ex) 강원도 창원 어디어디',style: TextStyle(fontSize: 15),),
+                    leading: Image.network(
+                      "https://images.unsplash.com/photo-1595445364671-15205e6c380c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=764&q=80",
+                      scale: 1,
+                    ),
+                    title: Text(
+                      '체험마을 이름',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    subtitle: Text(
+                      '체험마을 주소 ex) 강원도 창원 어디어디',
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
                 ],
               ),
@@ -226,13 +241,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.account_circle,
+                      leading: Icon(Icons.account_circle,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('$name',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('예약자 이름'),
                     ),
                     SizedBox(
@@ -243,13 +256,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.alternate_email,
+                      leading: Icon(Icons.alternate_email,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('$email',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('이메일'),
                     ),
                     SizedBox(
@@ -260,13 +271,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.phone,
+                      leading: Icon(Icons.phone,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('$phone',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('핸드폰'),
                     ),
                     SizedBox(
@@ -277,15 +286,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.supervisor_account_rounded,
+                      leading: Icon(Icons.supervisor_account_rounded,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('$people명',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('인원'),
-
                       trailing: IconButton(
                         icon: const Icon(Icons.arrow_forward_ios),
                         onPressed: _checkPeople,
@@ -299,22 +305,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.calendar_today,
+                      leading: Icon(Icons.calendar_today,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('$finalDate',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('예약날짜'),
                       trailing: RaisedButton(
                         onPressed: _showDatePicker,
-                        child: const Text('예약날짜 선택하기',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0),),
+                        child: const Text(
+                          '예약날짜 선택하기',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13.0),
+                        ),
                         textColor: Colors.white,
                         color: Color.fromRGBO(168, 114, 207, 1),
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
                       ),
                     ),
                     SizedBox(
@@ -325,61 +333,58 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     ListTile(
-                      leading: Icon(
-                          Icons.phone,
+                      leading: Icon(Icons.phone,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text('010-1234-5678',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54)),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('핸드폰'),
                     ),
                   ],
                 ),
-              )
-          ),
+              )),
           Container(
             height: 20,
           ),
           Container(
             //margin: const EdgeInsets.only(top: 16.0),
             padding: const EdgeInsets.all(8.0),
-            width:350,
+            width: 350,
             height: 75,
             //alignment: Alignment.topCenter,
             child: RaisedButton(
               onPressed: () {
-                if (people == 0){
+                if (people == 0) {
                   print('인원을 선택해주세요');
                   error = '인원을 ';
                   _showDialog();
-                } else if (finalDate == ''){
+                } else if (finalDate == '') {
                   print('날짜를 선택해주세요');
                   error = '날짜를 ';
                   _showDialog();
-                }else {
+                } else {
                   String test = 'test';
                   _inputUser();
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>
-                          CheckPage()) //로그인 페이지로 이동
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => CheckPage()) //로그인 페이지로 이동
+                      );
                   return;
                 }
                 print(name);
                 print(phone);
                 print(email);
-
-
               },
-              child:
-              Text('$Money원 결제하기',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),),
+              child: Text(
+                '$Money원 결제하기',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+              ),
               textColor: Colors.white,
               color: Color.fromRGBO(168, 114, 207, 1),
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
             ),
           ),
           Container(
@@ -403,20 +408,26 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Scaffold(
         appBar: AppBar(
           leading: Builder(
-            builder: (BuildContext context){
-              return IconButton(icon: const Icon(Icons.arrow_back),
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.arrow_back),
                 color: Colors.black45,
                 onPressed: () async {
                   String test = 'test';
                   final result = await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailsPage())//로그인 페이지로 이동
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => DetailsPage()) //로그인 페이지로 이동
+                      );
                 },
               );
             },
           ),
-          title: Text(widget.title, style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.black),),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0.0,
