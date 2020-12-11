@@ -97,41 +97,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 로그인 된 경우 DrawerHeader
-    Widget Login_done() {
-      return new DrawerHeader(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(137, 71, 184, 1),
-        ),
-        child: _getDB(1),
 
-        /*Text(
-          '\n$name\n$_id',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
-        ),*/
-      );
-    }
-
-    // 로그인 된 경우 로그아웃 버튼 137
-    Widget Login_dones() {
-      return new ListTile(
-        leading: Icon(Icons.logout),
-        title: Text('로그아웃'),
-        onTap: () {
-          // 로그아웃 처리
-          _auth.signOut();
-
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyApp()));
-        },
-      );
-    }
-
-    // 로그인 안 된 경우 DrawerHeader
-    Widget Login_Signup() {
+    Widget Signin() {
       return new DrawerHeader(
         decoration: BoxDecoration(
           color: Color.fromRGBO(137, 71, 184, 1),
@@ -146,8 +113,55 @@ class MainPage extends StatelessWidget {
       );
     }
 
-    // 로그인 안 된 경우 로그인 버튼
-    Widget Login_Signups() {
+    // 메인페이지 버튼
+    Widget mainBtn(){
+      return new ListTile(
+        leading: Icon(Icons.home, color: Colors.white),
+        title: Text(
+          '메인페이지',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyApp()));
+        },
+      );
+    }
+
+    // 개인정보 버튼
+    Widget accountBtn() {
+      return new ListTile(
+        leading: Icon(Icons.account_circle),
+        title: Text('개인정보'),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AccountPage()));
+        },
+      );
+    }
+
+    // 예약확인 버튼
+    Widget fact_check() {
+      return new ListTile(
+        leading: Icon(Icons.fact_check),
+        title: Text('예약확인'),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CheckPage()));
+        },
+      );
+    }
+
+    // 빈공간 채우기
+    Widget box(int i){
+      return new SizedBox(
+        height: MediaQuery.of(context).size.height - 137 - i
+      );
+    }
+
+    // 로그인버튼
+    Widget loginBtn() {
       return new ListTile(
         leading: Icon(Icons.login, color: Colors.white),
         title: Text(
@@ -161,8 +175,8 @@ class MainPage extends StatelessWidget {
       );
     }
 
-    // 회원가입
-    Widget register() {
+    // 회원가입 버튼
+    Widget registerBtn() {
       return new ListTile(
         leading: Icon(Icons.person_add_alt, color: Colors.white),
         title: Text(
@@ -176,50 +190,19 @@ class MainPage extends StatelessWidget {
       );
     }
 
-    // 예약확인
-    Widget fact_check() {
+    // 로그아웃 버튼
+    Widget logoutBtn() {
       return new ListTile(
-        leading: Icon(Icons.fact_check),
-        title: Text('예약확인'),
+        leading: Icon(Icons.logout),
+        title: Text('로그아웃'),
         onTap: () {
+          // 로그아웃 처리
+          _auth.signOut();
+
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CheckPage()));
+              context, MaterialPageRoute(builder: (context) => MyApp()));
         },
       );
-    }
-
-    // 개인정보
-    Widget account() {
-      return new ListTile(
-        leading: Icon(Icons.account_circle),
-        title: Text('개인정보'),
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AccountPage()));
-        },
-      );
-    }
-
-    Widget box(int size) {
-      return new SizedBox(
-        height: MediaQuery.of(context).size.height - (137 + size),
-      );
-      // return new Container(
-      //   height: 450,
-      //   color: Colors.white,
-      //   child:LayoutBuilder(
-      //     builder: (BuildContext context, BoxConstraints constraints) {
-      //       final localWidgetSize=Size(constraints.maxWidth, constraints.maxHeight);
-      //       return Center(
-      //           child: Text('this is container: ${localWidgetSize.height}')
-      //       );
-      //     },
-      //   ),
-      // );
-    }
-
-    Widget boxe() {
-      return new SizedBox(height: 100);
     }
 
     return Scaffold(
@@ -237,8 +220,8 @@ class MainPage extends StatelessWidget {
           children: <Widget>[
             new Center(
                 child: new Column(
-              children: <Widget>[],
-            )),
+                  children: <Widget>[],
+                )),
             Positioned(
               //left: 0,
               //top: 20,
@@ -261,36 +244,19 @@ class MainPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              // 로그인 여부에 따른 DrawerHeader
-              if (app.user == null) Login_Signup() else Login_done(),
+              if(app.user == null) Signin() else _getDB(1),
 
-              ListTile(
-                leading: Icon(Icons.home, color: Colors.white),
-                title: Text(
-                  '메인페이지',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyApp()));
-                },
-              ),
+              mainBtn(),
 
-              // 로그인 여부에 따른 개인정보 유무
-              if (app.user != null) account() else register(),
+              if (app.user != null) accountBtn() else registerBtn(),
 
               // 로그인 여부에 따른 예약확인 유무
-              if (app.user != null) fact_check() else boxe(),
+              if (app.user != null) fact_check(),
 
-              if (app.user != null) box(300) else box(350),
-
-              // 로그인 했을 경우
-              // if(app.user == null) Login_dones()
-              // else Login_Signups(),
+              if (app.user != null) box(200) else box(250),
 
               // 로그인 전
-              if (app.user == null) Login_Signups() else Login_dones(),
+              if (app.user == null) loginBtn() else logoutBtn(),
             ],
           ),
         ),
@@ -303,7 +269,7 @@ class MainPage extends StatelessWidget {
             child: Wrap(
               children: List<Widget>.generate(
                 1,
-                (int index) {
+                    (int index) {
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: FractionallySizedBox(
@@ -358,7 +324,7 @@ class MainPage extends StatelessWidget {
                         tabs: [
                           Container(
                             width: 90,
-                            height: 80,
+                            height: 60,
                             child: Tab(
                               child: Text(
                                 "수도권",
@@ -371,7 +337,7 @@ class MainPage extends StatelessWidget {
                           ),
                           Container(
                             width: 90,
-                            height: 80,
+                            height: 60,
                             child: Tab(
                               child: Text(
                                 "강원도",
@@ -384,7 +350,7 @@ class MainPage extends StatelessWidget {
                           ),
                           Container(
                             width: 90,
-                            height: 80,
+                            height: 60,
                             child: Tab(
                               child: Text(
                                 "전라도",
@@ -397,7 +363,7 @@ class MainPage extends StatelessWidget {
                           ),
                           Container(
                             width: 90,
-                            height: 80,
+                            height: 60,
                             child: Tab(
                               child: Text(
                                 "충청도",
@@ -410,7 +376,7 @@ class MainPage extends StatelessWidget {
                           ),
                           Container(
                             width: 90,
-                            height: 80,
+                            height: 60,
                             child: Tab(
                               child: Text(
                                 "경상도",
@@ -424,7 +390,7 @@ class MainPage extends StatelessWidget {
                         ],
                       ),
                       Container(
-                          height: 500,
+                          height: MediaQuery.of(context).size.height - (250),
                           margin: const EdgeInsets.only(top: 10),
 
                           //height of TabBarView
@@ -434,14 +400,14 @@ class MainPage extends StatelessWidget {
                               //-------수도권
                               children: <Widget>[
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -495,7 +461,7 @@ class MainPage extends StatelessWidget {
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -504,14 +470,14 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -565,7 +531,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -574,14 +540,14 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -635,7 +601,7 @@ class MainPage extends StatelessWidget {
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -644,14 +610,14 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -705,7 +671,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -719,14 +685,14 @@ class MainPage extends StatelessWidget {
                               //----------강원도
                               children: <Widget>[
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -780,7 +746,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -794,14 +760,14 @@ class MainPage extends StatelessWidget {
                               //---------전라도
                               children: <Widget>[
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -855,7 +821,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -869,14 +835,14 @@ class MainPage extends StatelessWidget {
                               //---------충청도
                               children: <Widget>[
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -930,7 +896,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -944,14 +910,14 @@ class MainPage extends StatelessWidget {
                               //--------경상도
                               children: <Widget>[
                                 Container(
-                                  height: 160,
+                                  height: 170,
                                   child: Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: Column(
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
+                                          EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -1005,7 +971,7 @@ class MainPage extends StatelessWidget {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                                  Colors.black.withOpacity(0.6),
+                                              Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
