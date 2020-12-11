@@ -34,6 +34,7 @@ dependencies:
   flutter_signin_button: ^1.1.0
   cloud_firestore: ^0.14.4
   badges: ^1.1.5
+  flutter_kakao_map: ^0.0.4
 
 
 dev_dependencies:
