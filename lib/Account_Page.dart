@@ -2,13 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'Login_page.dart';
 import 'main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(AccountPage());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+    ],
+    child: AccountPage(),
+  ),);
 }
 
 class user {
@@ -62,12 +69,63 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildItemWidget(DocumentSnapshot doc, int i) {
     final users = user(doc['name'], doc['email'], doc['phone'],doc['birth']);
 
-    user(users.name, users.email, users.phone,users.phone);
+    user(users.name, users.email, users.phone, users.birth);
 
-    _name = users.name;
+    switch (i) {
+      case 1:
+        {
+          return Text(
+            users.name,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black54,
+            ),
+            textAlign: TextAlign.left,
+          );
+        }
+        break;
+      case 2:
+        {
+          return Text(
+            users.email,
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+            textAlign: TextAlign.left,
+          );
+        }
+        break;
+      case 3:
+        {
+          return Text(
+            users.phone,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black54,
+            ),
+            textAlign: TextAlign.left,
+          );
+        }
+        break;
+      case 4:
+        {
+          return Text(
+            users.birth,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black54,
+            ),
+            textAlign: TextAlign.left,
+          );
+        }
+        break;
+      default:
+    }
+
+    /*_name = users.name;
     _phone = users.phone;
     _birth = users.birth;
-    _email = users.email;
+    _email = users.email; */
   }
 
   Widget _getDB(int i) {
@@ -117,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   width: 370,
-                  height: 480,
+                  height: 400,
                   child: Card(
                     child: Column(
                       children: [
@@ -128,10 +186,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(
                               Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('$_email',
+                          title:_getDB(2),
+                          /* title: Text('$_email',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.black54)),
+                                  color: Colors.black54)), */
                           subtitle: Text('이메일',
                               style: TextStyle(
                                   color: Colors.black26)),
@@ -139,14 +198,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 10.0,
                         ),
+                        Divider(height: 1.0),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         ListTile(
                           leading: Icon(
                               Icons.account_circle,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('$_name',
+                          title:_getDB(1),
+                          /* title: Text('$_name',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.black54)),
+                                  color: Colors.black54)), */
                           subtitle: Text('이름',
                               style: TextStyle(
                                   color: Colors.black26)),
@@ -162,10 +226,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(
                               Icons.phone,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('$_phone',
+                          title:_getDB(3),
+                          /*title: Text('$_phone',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.black54)),
+                                  color: Colors.black54)), */
                           subtitle: Text('핸드폰',
                               style: TextStyle(
                                   color: Colors.black26)),
@@ -181,10 +246,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(
                               Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('$_birth',
+                          title:_getDB(4),
+                          /*title: Text('$_birth',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.black54)),
+                                  color: Colors.black54)),*/
                           subtitle: Text('생일',
                               style: TextStyle(
                                   color: Colors.black26)),
