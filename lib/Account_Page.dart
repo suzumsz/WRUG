@@ -7,17 +7,6 @@ import 'main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
-    ],
-    child: AccountPage(),
-  ),);
-}
-
 class user {
   String name;
   String email;
