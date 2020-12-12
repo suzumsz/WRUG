@@ -6,14 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wheregoing/Details_page.dart';
 import 'Details_page.dart';
 import 'Check_page.dart';
+import 'Login_page.dart';
 import 'main.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ReservationPage());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+    ],
+    child: ReservationPage(),
+  ),);
 }
+
+String _userName;
+String _userPhone;
+String _userEmail;
 
 class ReservationPage extends StatelessWidget {
   //StatefulWidget
@@ -233,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Container(
               width: 370,
-              height: 560,
+              height: 474,
               child: Card(
                 child: Column(
                   children: [
@@ -243,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       leading: Icon(Icons.account_circle,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('$name',
+                      title: Text('$_userName',
                           style:
                               TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('예약자 이름'),
@@ -258,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       leading: Icon(Icons.alternate_email,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('$email',
+                      title: Text('$_userEmail',
                           style:
                               TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('이메일'),
@@ -273,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       leading: Icon(Icons.phone,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('$phone',
+                      title: Text('$_userPhone',
                           style:
                               TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('핸드폰'),
@@ -329,17 +340,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     Divider(height: 1.0),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.phone,
-                          color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('010-1234-5678',
-                          style:
-                              TextStyle(fontSize: 18, color: Colors.black54)),
-                      subtitle: Text('핸드폰'),
-                    ),
                   ],
                 ),
               )),
@@ -398,7 +398,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _getDB(1);
+    //_getDB(1);
+    _userName = context.watch<FirebaseAuthService>().userName;
+    print(_userName);
+    _userPhone = context.watch<FirebaseAuthService>().userPhone;
+    print(_userPhone);
+    _userEmail = context.watch<FirebaseAuthService>().count;
+    print(_userEmail);
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),

@@ -7,29 +7,36 @@ import 'Details_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+    ],
+    child: MyApp(),
+  ),);
 }
 
 class user {
   String name;
   String email;
+  String phone;
 
-  user(this.name, this.email);
+  user(this.name, this.email, this.phone);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _currentUser = FirebaseAuth.instance.currentUser;
 final _firestore = Firestore.instance;
 //provider패키지 이용
-var _email;
-final name = 'abcde';
+String _email;
+String _name;
+String _phone;
 final _location = '인천광역시 강화군 불은면 강화동로 416';
 final app = AppState(false, null);
-String checkIn;
 
 class MyApp extends StatelessWidget {
   @override
@@ -48,14 +55,16 @@ class MyApp extends StatelessWidget {
 }
 
 Widget _buildItemWidget(DocumentSnapshot docs, int i) {
-  final users = user(docs['name'], docs['email']);
+  final users = user(docs['name'], docs['email'], docs['phone']);
 
-  user(users.name, users.email);
+  user(users.name, users.email, users.phone);
 
   switch (i) {
     case 1:
       {
-
+        _name = users.name.toString();
+        _email = users.email.toString();
+        _phone = users.phone.toString();
         return Text(
           users.name + '\n' + users.email,
           style: TextStyle(
@@ -103,8 +112,21 @@ class _MainPageState extends State<MainPage> {
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
+  void _moreButton(){
+    context.read<FirebaseAuthService>().incrementName(_name);
+    context.read<FirebaseAuthService>().incrementPhone(_phone);
+    context.read<FirebaseAuthService>().increment(_email);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                DetailsPage()));
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    var _loginCheck = context.watch<FirebaseAuthService>().count;
     Widget Signin() {
       return new DrawerHeader(
         decoration: BoxDecoration(
@@ -202,7 +224,8 @@ class _MainPageState extends State<MainPage> {
         onTap: () {
           // 로그아웃 처리
           _auth.signOut();
-          checkIn = null;
+          print(_currentUser);
+          context.read<FirebaseAuthService>().decrement();
           print(_currentUser.email);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -249,19 +272,19 @@ class _MainPageState extends State<MainPage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              if (checkIn == null) Signin() else _getDB(1),
+              if (_loginCheck == null) Signin() else _getDB(1),
 
               mainBtn(),
 
-              if (checkIn != null) accountBtn() else registerBtn(),
+              if (_loginCheck != null) accountBtn() else registerBtn(),
 
               // 로그인 여부에 따른 예약확인 유무
-              if (checkIn != null) fact_check(),
+              if (_loginCheck != null) fact_check(),
 
-              if (checkIn != null) box(200) else box(250),
+              if (_loginCheck != null) box(200) else box(250),
 
               // 로그인 전
-              if (checkIn == null) loginBtn() else logoutBtn(),
+              if (_loginCheck == null) loginBtn() else logoutBtn(),
             ],
           ),
         ),
@@ -451,13 +474,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -521,13 +538,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -591,13 +602,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -661,13 +666,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -736,13 +735,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -811,13 +804,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -886,13 +873,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(
@@ -961,13 +942,7 @@ class _MainPageState extends State<MainPage> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsPage()));
-                                            },
+                                            onPressed: _moreButton,
                                           ),
                                         ),
                                         Padding(

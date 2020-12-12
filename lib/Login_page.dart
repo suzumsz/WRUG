@@ -1,9 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'Join_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
+import 'package:provider/provider.dart';
 
 const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
 const SubColor = Color.fromRGBO(241, 230, 250, 1);
@@ -12,11 +12,61 @@ class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
+String email;
+
+class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
+  String _loginemail = null;
+  String _userName;
+  String _userPhone;
+
+  String get count => _loginemail;
+  String get userName => _userName;
+  String get userPhone => _userPhone;
+
+  void increment(email){
+    _loginemail = '$email';
+    notifyListeners();
+  }
+  void incrementName(name){
+    _userName = '$name';
+    notifyListeners();
+  }
+  void incrementPhone(phone){
+    _userPhone = '$phone';
+    notifyListeners();
+  }
+
+  void decrement(){
+    _loginemail = null;
+    notifyListeners();
+  }
+  /*
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('count', _loginemail));
+  }*/
+
+  FirebaseAuthService({auth}) : _auth = auth ?? FirebaseAuth.instance;
+  FirebaseAuth _auth;
+
+  Future<FirebaseUser> signInWithEmailAndPassword(
+      {@required String email, @required String password}) async {
+    final credential = EmailAuthProvider.getCredential(
+      email: email,
+      password: password,
+    );
+    final authResult = await _auth.signInWithCredential(credential);
+    return authResult.user;
+  }
+}
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  FirebaseAuthService _auth;
 
   bool _success;
   String _userEmail;
@@ -24,6 +74,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _auth = Provider.of<FirebaseAuthService>(context, listen:false);
+    print('print:$_auth');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -123,10 +175,10 @@ class _LoginPageState extends State<LoginPage> {
                             width: 350.0,
                             height: 60.0,
                             child: RaisedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-
                                   _signIn();
+                                  context.read<FirebaseAuthService>().increment(email);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -212,16 +264,16 @@ class _LoginPageState extends State<LoginPage> {
   //사용자 로그인 처리
   void _signIn() async {
     try {
-      final User user = (await _auth.signInWithEmailAndPassword(
+      final user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      ))
-          .user;
+      ));
 
       if (user != null) {
         setState(() {
           _success = true;
           _userEmail = user.email;
+          email = user.email;
         });
       } else {
         setState(() {
