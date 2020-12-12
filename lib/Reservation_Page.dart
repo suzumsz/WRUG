@@ -1,13 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wheregoing/Details_page.dart';
 import 'Details_page.dart';
 import 'Check_page.dart';
 import 'Login_page.dart';
-import 'main.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -42,13 +40,6 @@ class ReservationPage extends StatelessWidget {
   }
 }
 
-class user {
-  String name;
-  String email;
-  String phone;
-  user(this.name, this.email, this.phone);
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -73,34 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final formatCurrency = new NumberFormat.simpleCurrency(
       locale: "ko_KR", name: "", decimalDigits: 0);
-  final _currentUser = FirebaseAuth.instance.currentUser;
-  final _firestore = Firestore.instance;
 
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Widget _buildItemWidget(DocumentSnapshot doc, int i) {
-    final users = user(doc['name'], doc['email'], doc['phone']);
-
-    user(users.name, users.email, users.phone);
-
-    name = users.name.toString();
-    phone = users.phone.toString();
-    email = users.email.toString();
-  }
-
-  Widget _getDB(int i) {
-    return StreamBuilder<DocumentSnapshot>(
-        stream:
-            _firestore.collection("user").doc(_currentUser.email).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-          final documents = snapshot.data;
-          return Container(child: _buildItemWidget(documents, i));
-        });
-  }
 
   CollectionReference Reservation =
       FirebaseFirestore.instance.collection('Reservation');
@@ -217,7 +184,6 @@ class _MyHomePageState extends State<MyHomePage> {
         scrollDirection: Axis.vertical,
         controller: _scrollController,
         children: <Widget>[
-          _getDB(1),
           Container(
             width: 370,
             height: 100,
