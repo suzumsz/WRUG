@@ -225,8 +225,12 @@ class _MainPageState extends State<MainPage> {
           // 로그아웃 처리
           _auth.signOut();
           print(_currentUser);
-          context.read<FirebaseAuthService>().decrement();
           print(_currentUser.email);
+          context.read<FirebaseAuthService>().decrement();
+          context.read<FirebaseAuthService>().decrementDate();
+          context.read<FirebaseAuthService>().decrementName();
+          context.read<FirebaseAuthService>().decrementPeople();
+          context.read<FirebaseAuthService>().decrementPhone();
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyApp()));
         },

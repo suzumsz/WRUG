@@ -18,10 +18,14 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
   String _loginemail = null;
   String _userName;
   String _userPhone;
+  String _userPeople;
+  String _userDate;
 
   String get count => _loginemail;
   String get userName => _userName;
   String get userPhone => _userPhone;
+  String get userPeople => _userPeople;
+  String get userDate => _userDate;
 
   void increment(email){
     _loginemail = '$email';
@@ -35,9 +39,33 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
     _userPhone = '$phone';
     notifyListeners();
   }
+  void incrementPeople(people){
+    _userPeople = '$people';
+    notifyListeners();
+  }
+  void incrementDate(date){
+    _userDate = '$date';
+    notifyListeners();
+  }
 
   void decrement(){
     _loginemail = null;
+    notifyListeners();
+  }
+  void decrementName(){
+    _userName = null;
+    notifyListeners();
+  }
+  void decrementPhone(){
+    _userPhone = null;
+    notifyListeners();
+  }
+  void decrementPeople(){
+    _userPeople = null;
+    notifyListeners();
+  }
+  void decrementDate(){
+    _userDate = null;
     notifyListeners();
   }
   /*

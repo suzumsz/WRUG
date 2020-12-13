@@ -76,13 +76,13 @@ class _MyHomePageState extends State<MyHomePage> {
       FirebaseFirestore.instance.collection('Reservation');
 
   Future<void> _inputUser() {
-    return Reservation.doc('$email')
+    return Reservation.doc('$_userEmail')
         .set({
-          'email': '$email',
-          'name': '$name',
-          'phone': '$phone',
+          'email': '$_userEmail',
+          'name': '$_userName',
+          'phone': '$_userPhone',
           'date': '$_selectedTime',
-          'people': '$people',
+          'people': '$_people',
         })
         .then((value) => print("Reservation Added"))
         .catchError((error) => print('Failed to add user: $error'));
@@ -175,10 +175,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CupertinoPicker(
                           itemExtent: 32,
                           onSelectedItemChanged: (int index) {
-                            _people = index + 1;
                             totalMoney = _people * 16000;
                             Money =
                                 (formatCurrency.format(totalMoney)).toString();
+                            setState(() {
+                              _people = index + 1;
+                            });
                           },
                           children: <Widget>[
                             Center(child: Text('1명')),
@@ -360,6 +362,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else {
                   String test = 'test';
                   _inputUser();
+                  context.read<FirebaseAuthService>().incrementPeople(_people);
+                  context.read<FirebaseAuthService>().incrementDate(_selectedTime);
+                  _people = 0;
+                  _selectedTime = DateTime.now();
                   Navigator.push(
                       context,
                       MaterialPageRoute(

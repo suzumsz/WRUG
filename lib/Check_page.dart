@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'Login_page.dart';
 import 'main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,8 +9,19 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+    ],
+    child: CheckPage(),
+  ),);
 }
+
+String _userName;
+String _userPhone;
+String _userPeople;
+String _userDate;
+
 
 class user {
   String name;
@@ -215,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.account_circle,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: _getDB(1),
+                          title: Text(_userName),
                           subtitle: Text('예약자 이름',
                               style: TextStyle(color: Colors.black26)),
                         ),
@@ -229,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.phone,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: _getDB(3),
+                          title: Text(_userPhone),
                           subtitle: Text('핸드폰',
                               style: TextStyle(color: Colors.black26)),
                         ),
@@ -243,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: _resDB(1),
+                          title: Text(_userDate.substring(0,10)),
                           /*Text('$date',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black54)),*/
@@ -260,7 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: _resDB(2),
+                          title: Text('$_userPeople명'),
                           /*Text('4명',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black54)),*/
@@ -295,6 +308,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _userName = context.watch<FirebaseAuthService>().userName;
+    _userPhone = context.watch<FirebaseAuthService>().userPhone;
+    _userDate = context.watch<FirebaseAuthService>().userDate;
+    _userPeople = context.watch<FirebaseAuthService>().userPeople;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
