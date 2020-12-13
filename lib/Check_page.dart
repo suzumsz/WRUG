@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Login_page.dart';
+import 'Reservation_Page.dart';
 import 'main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
 }
 
 String _userName;
+String _userEmail;
 String _userPhone;
 String _userPeople;
 String _userDate;
@@ -198,12 +200,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 ListTile(
                   leading: Icon(Icons.account_circle_outlined,
                       size: 50, color: Colors.black54),
-                  title: _getDB(1),
-                  subtitle: _getDB(2),
+                  title: Text('$_userName'),
+                  subtitle: Text('$_userEmail'),
                   trailing: RaisedButton(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyApp()));
+                          MaterialPageRoute(builder: (context) => ReservationPage()));
                     },
                     child: Text('예약정보수정', style: TextStyle(fontSize: 13)),
                     textColor: Colors.white,
@@ -309,6 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     _userName = context.watch<FirebaseAuthService>().userName;
+    _userEmail = context.watch<FirebaseAuthService>().count;
     _userPhone = context.watch<FirebaseAuthService>().userPhone;
     _userDate = context.watch<FirebaseAuthService>().userDate;
     _userPeople = context.watch<FirebaseAuthService>().userPeople;
