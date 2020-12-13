@@ -23,7 +23,7 @@ Future<void> main() async {
 }
 
 DateTime _selectedTime;
-int _people;
+int _people = 0;
 String _userName;
 String _userPhone;
 String _userEmail;
@@ -349,7 +349,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //alignment: Alignment.topCenter,
             child: RaisedButton(
               onPressed: () {
-                if (people == 0) {
+                if (_people == 0) {
                   print('인원을 선택해주세요');
                   error = '인원을 ';
                   _showDialog();
