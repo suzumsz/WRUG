@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
+import 'Login_page.dart';
 import 'Reservation_Page.dart';
 import 'main.dart';
 import 'package:badges/badges.dart';
 
 void main() {
-  runApp(DetailsPage());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+    ],
+    child: DetailsPage(),
+  ),
+  );
 }
 
 class DetailsPage extends StatefulWidget {
@@ -37,8 +45,21 @@ class _DetailsPage extends State<DetailsPage>{
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
+  void _LoginError() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('로그인 후 이용해주세요'),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var _loginCheck = context.watch<FirebaseAuthService>().count;
+    print("loginCheck: $_loginCheck");
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -81,11 +102,15 @@ class _DetailsPage extends State<DetailsPage>{
                           RaisedButton(
                             child: Text('예약하기', style: TextStyle(fontSize: 18),),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ReservationPage()));
+                              if(_loginCheck != null) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReservationPage()));
+                              } else{
+                                _LoginError();
+                              }
                             },
                             color: PrimaryColor,
                             shape: RoundedRectangleBorder(

@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
 String email;
 
 class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
-  String _loginemail = null;
+  String _loginemail;
   String _userName;
   String _userPhone;
   String _userPeople;
@@ -103,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     _auth = Provider.of<FirebaseAuthService>(context, listen:false);
-    print('print:$_auth');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
