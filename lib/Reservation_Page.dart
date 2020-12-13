@@ -353,7 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   print('인원을 선택해주세요');
                   error = '인원을 ';
                   _showDialog();
-                } else if (finalDate == '') {
+                } else if (_selectedTime == null) {
                   print('날짜를 선택해주세요');
                   error = '날짜를 ';
                   _showDialog();
