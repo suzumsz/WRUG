@@ -12,14 +12,17 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
-    ],
-    child: ReservationPage(),
-  ),);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+      ],
+      child: ReservationPage(),
+    ),
+  );
 }
 
+DateTime _selectedTime;
 String _userName;
 String _userPhone;
 String _userEmail;
@@ -68,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-
   CollectionReference Reservation =
       FirebaseFirestore.instance.collection('Reservation');
 
@@ -96,7 +98,30 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  void _showDatePicker() {
+  DateTime datePickter() {
+    Future<DateTime> selectedDate = showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // 초깃값
+      firstDate: DateTime(2018), // 시작일
+      lastDate: DateTime(2030), // 마지막일
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark(), // 다크테마
+          child: child,
+        );
+      },
+    );
+    selectedDate.then((dateTime) {
+      setState(() {
+        _selectedTime = dateTime;
+        print('날짜 선택 : ' + _selectedTime.toString());
+        return _selectedTime;
+      });
+    });
+    return null;
+  }
+
+  /*void _showDatePicker() async {
     Future<DateTime> selectedDate = showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -115,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
       finalDate = cutOut[0];
       print('선택: $finalDate');
     });
-  }
+  }*/
 
   void _checkPeople() {
     showModalBottomSheet(
@@ -284,12 +309,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       leading: Icon(Icons.calendar_today,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('$finalDate',
+                      title: Text(
+                          DateFormat('MM월 dd일').format(_selectedTime == null
+                              ? DateTime.now()
+                              : _selectedTime),
                           style:
                               TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('예약날짜'),
                       trailing: RaisedButton(
-                        onPressed: _showDatePicker,
+                        onPressed: datePickter,
                         child: const Text(
                           '예약날짜 선택하기',
                           style: TextStyle(
