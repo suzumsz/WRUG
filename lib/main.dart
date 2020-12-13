@@ -112,21 +112,23 @@ class _MainPageState extends State<MainPage> {
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
-  void _moreButton(){
-    context.read<FirebaseAuthService>().incrementName(_name);
-    context.read<FirebaseAuthService>().incrementPhone(_phone);
-    context.read<FirebaseAuthService>().increment(_email);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                DetailsPage()));
-  }
-
 
   @override
   Widget build(BuildContext context) {
     var _loginCheck = context.watch<FirebaseAuthService>().count;
+    print("loginCheck: $_loginCheck");
+    void _moreButton(){
+      if(_loginCheck != null) {
+        context.read<FirebaseAuthService>().incrementName(_name);
+        context.read<FirebaseAuthService>().incrementPhone(_phone);
+        context.read<FirebaseAuthService>().increment(_email);
+      }
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DetailsPage()));
+    }
     Widget Signin() {
       return new DrawerHeader(
         decoration: BoxDecoration(
