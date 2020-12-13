@@ -23,6 +23,7 @@ Future<void> main() async {
 }
 
 DateTime _selectedTime;
+int _people;
 String _userName;
 String _userPhone;
 String _userEmail;
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
           'email': '$email',
           'name': '$name',
           'phone': '$phone',
-          'date': '$finalDate',
+          'date': '$_selectedTime',
           'people': '$people',
         })
         .then((value) => print("Reservation Added"))
@@ -174,8 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CupertinoPicker(
                           itemExtent: 32,
                           onSelectedItemChanged: (int index) {
-                            people = index + 1;
-                            totalMoney = people * 16000;
+                            _people = index + 1;
+                            totalMoney = _people * 16000;
                             Money =
                                 (formatCurrency.format(totalMoney)).toString();
                           },
@@ -290,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       leading: Icon(Icons.supervisor_account_rounded,
                           color: Color.fromRGBO(137, 71, 184, 1)),
-                      title: Text('$people명',
+                      title: Text(_people == null ? '0명' : '$_people명',
                           style:
                               TextStyle(fontSize: 18, color: Colors.black54)),
                       subtitle: Text('인원'),
