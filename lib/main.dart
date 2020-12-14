@@ -12,12 +12,14 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
-    ],
-    child: MyApp(),
-  ),);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class user {
@@ -66,7 +68,7 @@ Widget _buildItemWidget(DocumentSnapshot docs, int i) {
         _email = users.email.toString();
         _phone = users.phone.toString();
         return Text(
-          users.name + '\n' + users.email,
+          '\n\n   ' + users.name + '\n   ' + users.email + '\n',
           style: TextStyle(
             fontSize: 24,
             color: Colors.white,
@@ -98,7 +100,8 @@ class AppState {
   AppState(this.loading, this.user);
 }
 
-class MainPage extends StatefulWidget {//StatefullWidget으로 바꾸기
+class MainPage extends StatefulWidget {
+  //StatefullWidget으로 바꾸기
   String title;
   MainPage({Key key, this.title}) : super(key: key);
   @override
@@ -106,29 +109,25 @@ class MainPage extends StatefulWidget {//StatefullWidget으로 바꾸기
 }
 
 class _MainPageState extends State<MainPage> {
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
-
   @override
   Widget build(BuildContext context) {
     var _loginCheck = context.watch<FirebaseAuthService>().count;
     print("loginCheck: $_loginCheck");
-    void _moreButton(){
-      if(_loginCheck != null) {
+    void _moreButton() {
+      if (_loginCheck != null) {
         context.read<FirebaseAuthService>().incrementName(_name);
         context.read<FirebaseAuthService>().incrementPhone(_phone);
         context.read<FirebaseAuthService>().increment(_email);
       }
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  DetailsPage()));
+          context, MaterialPageRoute(builder: (context) => DetailsPage()));
     }
+
     Widget Signin() {
       return new DrawerHeader(
         decoration: BoxDecoration(
@@ -137,7 +136,7 @@ class _MainPageState extends State<MainPage> {
         child: Text(
           '\n\n로그인 후 예약 가능합니다.',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             color: Colors.white,
           ),
         ),
@@ -149,7 +148,7 @@ class _MainPageState extends State<MainPage> {
       return new ListTile(
         leading: Icon(Icons.home, color: Colors.white),
         title: Text(
-          '메인페이지',
+          '홈',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onTap: () {
@@ -162,8 +161,11 @@ class _MainPageState extends State<MainPage> {
     // 개인정보 버튼
     Widget accountBtn() {
       return new ListTile(
-        leading: Icon(Icons.account_circle),
-        title: Text('개인정보'),
+        leading: Icon(Icons.account_circle, color: Colors.white),
+        title: Text(
+          '내 정보',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AccountPage()));
@@ -174,8 +176,11 @@ class _MainPageState extends State<MainPage> {
     // 예약확인 버튼
     Widget fact_check() {
       return new ListTile(
-        leading: Icon(Icons.fact_check),
-        title: Text('예약확인'),
+        leading: Icon(Icons.fact_check, color: Colors.white),
+        title: Text(
+          '예약 확인',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => CheckPage()));
@@ -206,7 +211,7 @@ class _MainPageState extends State<MainPage> {
     // 회원가입 버튼
     Widget registerBtn() {
       return new ListTile(
-        leading: Icon(Icons.person_add_alt, color: Colors.white),
+        leading: Icon(Icons.person, color: Colors.white),
         title: Text(
           '회원가입',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -221,8 +226,11 @@ class _MainPageState extends State<MainPage> {
     // 로그아웃 버튼
     Widget logoutBtn() {
       return new ListTile(
-        leading: Icon(Icons.logout),
-        title: Text('로그아웃'),
+        leading: Icon(Icons.logout, color: Colors.white),
+        title: Text(
+          '로그아웃',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         onTap: () {
           // 로그아웃 처리
           _auth.signOut();
@@ -254,8 +262,8 @@ class _MainPageState extends State<MainPage> {
           children: <Widget>[
             new Center(
                 child: new Column(
-                  children: <Widget>[],
-                )),
+              children: <Widget>[],
+            )),
             Positioned(
               //left: 0,
               //top: 20,
@@ -287,7 +295,7 @@ class _MainPageState extends State<MainPage> {
               // 로그인 여부에 따른 예약확인 유무
               if (_loginCheck != null) fact_check(),
 
-              if (_loginCheck != null) box(200) else box(250),
+              if (_loginCheck != null) box(250) else box(250),
 
               // 로그인 전
               if (_loginCheck == null) loginBtn() else logoutBtn(),
@@ -303,7 +311,7 @@ class _MainPageState extends State<MainPage> {
             child: Wrap(
               children: List<Widget>.generate(
                 1,
-                    (int index) {
+                (int index) {
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: FractionallySizedBox(
@@ -441,7 +449,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -489,7 +497,7 @@ class _MainPageState extends State<MainPage> {
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -505,7 +513,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -553,7 +561,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -569,7 +577,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '농사 체험',
                                             style: TextStyle(
@@ -617,7 +625,7 @@ class _MainPageState extends State<MainPage> {
                                             '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -633,7 +641,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -681,7 +689,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -702,7 +710,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -750,7 +758,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -771,7 +779,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -819,7 +827,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -840,7 +848,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -888,7 +896,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
@@ -909,7 +917,7 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         ListTile(
                                           contentPadding:
-                                          EdgeInsets.only(left: 15, top: 8),
+                                              EdgeInsets.only(left: 15, top: 8),
                                           title: const Text(
                                             '두부 체험 마을',
                                             style: TextStyle(
@@ -957,7 +965,7 @@ class _MainPageState extends State<MainPage> {
                                             '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
                                             style: TextStyle(
                                               color:
-                                              Colors.black.withOpacity(0.6),
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ),
