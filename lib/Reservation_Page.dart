@@ -88,6 +88,33 @@ class _MyHomePageState extends State<MyHomePage> {
         .catchError((error) => print('Failed to add user: $error'));
   }
 
+  void _AlertDialog() {
+  showDialog(
+  context: context,
+  barrierDismissible: false,
+  builder: (BuildContext context) {
+  return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0)
+      ),
+      title: new Text("예약이 완료되었습니다"),
+      actions: <Widget>[
+        new FlatButton(
+            child: new Text("확인",
+              style: TextStyle(color: PrimaryColor)),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CheckPage()) //로그인 페이지로 이동
+            );
+          },
+        ),
+      ]
+  );
+  });
+  }
+
   void _showDialog() {
     showDialog(
         context: context,
@@ -368,11 +395,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   context.read<FirebaseAuthService>().incrementDate(_selectedTime);
                   _people = 0;
                   _selectedTime = DateTime.now();
-                  Navigator.push(
+                  /*Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => CheckPage()) //로그인 페이지로 이동
-                      );
+                      );*/
+                  _AlertDialog();
                   return;
                 }
                 print(name);
