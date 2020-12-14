@@ -170,18 +170,59 @@ class _MainPageState extends State<MainPage> {
       final w = town_c(doc['name'], doc['location'], doc['content']);
       final n = town_d(doc['name'], doc['location'], doc['content']);
       return Card(
-        child: ListTile(
-          title: Text(
-            towns.name,
+        child: Column(children: [
+          ListTile(
+            title: Text(
+              '\n' + towns.name,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            subtitle: Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      size: 18,
+                      color: Color.fromRGBO(137, 71, 184, 1),
+                    ),
+                    Padding(
+                      child: Text(
+                        towns.location,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Color.fromRGBO(137, 71, 184, 1),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(left: 5),
+                    ),
+                  ],
+                )),
+            //Text(
+            // '\n' + towns.location + '\n\n' + towns.content + '\n',
+            //),
+            trailing: TextButton(
+              onPressed: _moreButton,
+              child: const Text(
+                '더보기',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
-          subtitle: Text(
-            '\n' + towns.location + '\n\n' + towns.content + '\n',
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              towns.content + '\n',
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.6),
+              ),
+            ),
           ),
-          trailing: TextButton(
-            onPressed: _moreButton,
-            child: const Text('더보기'),
-          ),
-        ),
+        ]),
       );
     }
 
