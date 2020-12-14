@@ -304,7 +304,8 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       //여기서부터 body
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 15, left: 15, bottom: 15),
@@ -982,6 +983,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      )
     );
   }
 }
