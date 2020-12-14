@@ -33,31 +33,36 @@ class user {
 class town {
   String name;
   String location;
-  town(this.name, this.location);
+  String content;
+  town(this.name, this.location, this.content);
 }
 
 class town_a {
   String name;
   String location;
-  town_a(this.name, this.location);
+  String content;
+  town_a(this.name, this.location, this.content);
 }
 
 class town_b {
   String location;
   String name;
-  town_b(this.name, this.location);
+  String content;
+  town_b(this.name, this.location, this.content);
 }
 
 class town_c {
   String location;
   String name;
-  town_c(this.name, this.location);
+  String content;
+  town_c(this.name, this.location, this.content);
 }
 
 class town_d {
   String location;
   String name;
-  town_d(this.name, this.location);
+  String content;
+  town_d(this.name, this.location, this.content);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -159,21 +164,23 @@ class _MainPageState extends State<MainPage> {
     }
 
     Widget _buildItemWidget(DocumentSnapshot doc) {
-      final towns = town(doc['name'], doc['location']);
-      final t = town_a(doc['name'], doc['location']);
-      final o = town_b(doc['name'], doc['location']);
-      final w = town_c(doc['name'], doc['location']);
-      final n = town_d(doc['name'], doc['location']);
-      return ListTile(
-        title: Text(
-          towns.name,
-        ),
-        subtitle: Text(
-          towns.location,
-        ),
-        trailing: TextButton(
-          onPressed: _moreButton,
-          child: const Text('더보기'),
+      final towns = town(doc['name'], doc['location'], doc['content']);
+      final t = town_a(doc['name'], doc['location'], doc['content']);
+      final o = town_b(doc['name'], doc['location'], doc['content']);
+      final w = town_c(doc['name'], doc['location'], doc['content']);
+      final n = town_d(doc['name'], doc['location'], doc['content']);
+      return Card(
+        child: ListTile(
+          title: Text(
+            towns.name,
+          ),
+          subtitle: Text(
+            '\n' + towns.location + '\n\n' + towns.content + '\n',
+          ),
+          trailing: TextButton(
+            onPressed: _moreButton,
+            child: const Text('더보기'),
+          ),
         ),
       );
     }
