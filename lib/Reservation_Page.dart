@@ -175,11 +175,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CupertinoPicker(
                           itemExtent: 32,
                           onSelectedItemChanged: (int index) {
-                            totalMoney = _people * 16000;
-                            Money =
-                                (formatCurrency.format(totalMoney)).toString();
+
+
                             setState(() {
                               _people = index + 1;
+                              totalMoney = _people * 16000;
+                              Money =
+                                  (formatCurrency.format(totalMoney)).toString();
                             });
                           },
                           children: <Widget>[

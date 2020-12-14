@@ -152,6 +152,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     var _loginCheck = context.watch<FirebaseAuthService>().count;
+    var _ResCheck = context.watch<FirebaseAuthService>().userDate;
     print("loginCheck: $_loginCheck");
     void _moreButton() {
       if (_loginCheck != null) {
@@ -280,8 +281,19 @@ class _MainPageState extends State<MainPage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CheckPage()));
+          if(_ResCheck != null) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CheckPage()));
+          } else{
+            showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('예약후에 이용해주세요'),
+                  );
+                });
+          }
         },
       );
     }
