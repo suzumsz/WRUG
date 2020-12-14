@@ -12,11 +12,10 @@ class user {
   String email;
   String phone;
   String birth;
-  user(this.name, this.email,this.phone,this.birth);
+  user(this.name, this.email, this.phone, this.birth);
 }
 
 class AccountPage extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class AccountPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: '개인정보'),
+      home: MyHomePage(title: '내 정보'),
     );
   }
 }
@@ -44,7 +43,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final _currentUser = FirebaseAuth.instance.currentUser;
   final _firestore = Firestore.instance;
 
@@ -56,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _email;
 
   Widget _buildItemWidget(DocumentSnapshot doc, int i) {
-    final users = user(doc['name'], doc['email'], doc['phone'],doc['birth']);
+    final users = user(doc['name'], doc['email'], doc['phone'], doc['birth']);
 
     user(users.name, users.email, users.phone, users.birth);
 
@@ -119,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _getDB(int i) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+        stream:
+            _firestore.collection("user").doc(_currentUser.email).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -128,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
           return Expanded(child: _buildItemWidget(documents, i));
         });
   }
-
 
   Widget _buildBody() {
     return ListView(
@@ -141,27 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   height: 20.0,
                 ),
-                ListTile(
-                  trailing: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) =>
-                              MyApp()));
-                    },
-                    child: Text('개인정보수정',
-                        style: TextStyle(
-                            fontSize: 13)),
-                    textColor: Colors.white,
-                    color: Color.fromRGBO(168, 114, 207, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
                 Container(
                   width: 370,
                   height: 400,
@@ -172,17 +149,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 10.0,
                         ),
                         ListTile(
-                          leading: Icon(
-                              Icons.supervisor_account_rounded,
+                          leading: Icon(Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title:_getDB(2),
+                          title: _getDB(2),
                           /* title: Text('$_email',
                               style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.black54)), */
                           subtitle: Text('이메일',
-                              style: TextStyle(
-                                  color: Colors.black26)),
+                              style: TextStyle(color: Colors.black26)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -192,17 +167,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 10.0,
                         ),
                         ListTile(
-                          leading: Icon(
-                              Icons.account_circle,
+                          leading: Icon(Icons.account_circle,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title:_getDB(1),
+                          title: _getDB(1),
                           /* title: Text('$_name',
                               style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.black54)), */
                           subtitle: Text('이름',
-                              style: TextStyle(
-                                  color: Colors.black26)),
+                              style: TextStyle(color: Colors.black26)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -212,17 +185,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 10.0,
                         ),
                         ListTile(
-                          leading: Icon(
-                              Icons.phone,
+                          leading: Icon(Icons.phone,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title:_getDB(3),
+                          title: _getDB(3),
                           /*title: Text('$_phone',
                               style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.black54)), */
                           subtitle: Text('핸드폰',
-                              style: TextStyle(
-                                  color: Colors.black26)),
+                              style: TextStyle(color: Colors.black26)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -232,17 +203,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 10.0,
                         ),
                         ListTile(
-                          leading: Icon(
-                              Icons.calendar_today,
+                          leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title:_getDB(4),
+                          title: _getDB(4),
                           /*title: Text('$_birth',
                               style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.black54)),*/
                           subtitle: Text('생일',
-                              style: TextStyle(
-                                  color: Colors.black26)),
+                              style: TextStyle(color: Colors.black26)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -254,8 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-        ]
-    );
+        ]);
   }
 
   @override
@@ -268,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('개인 정보',
+          title: Text('내 정보',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -279,11 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: IconButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MyApp()
-                    )
-                );
+                    context, MaterialPageRoute(builder: (context) => MyApp()));
               },
               color: Colors.black45,
               icon: Icon(Icons.arrow_back)),
@@ -293,4 +257,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
