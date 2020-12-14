@@ -32,27 +32,32 @@ class user {
 
 class town {
   String name;
-  town(this.name);
+  String location;
+  town(this.name, this.location);
 }
 
 class town_a {
   String name;
-  town_a(this.name);
+  String location;
+  town_a(this.name, this.location);
 }
 
 class town_b {
+  String location;
   String name;
-  town_b(this.name);
+  town_b(this.name, this.location);
 }
 
 class town_c {
+  String location;
   String name;
-  town_c(this.name);
+  town_c(this.name, this.location);
 }
 
 class town_d {
+  String location;
   String name;
-  town_d(this.name);
+  town_d(this.name, this.location);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -134,19 +139,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Widget _buildItemWidget(DocumentSnapshot doc) {
-    final towns = town(doc['name']);
-    final t = town_a(doc['name']);
-    final o = town_b(doc['name']);
-    final w = town_c(doc['name']);
-    final n = town_d(doc['name']);
-    return ListTile(
-      title: Text(
-        towns.name,
-      ),
-    );
-  }
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
@@ -164,6 +156,26 @@ class _MainPageState extends State<MainPage> {
       }
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DetailsPage()));
+    }
+
+    Widget _buildItemWidget(DocumentSnapshot doc) {
+      final towns = town(doc['name'], doc['location']);
+      final t = town_a(doc['name'], doc['location']);
+      final o = town_b(doc['name'], doc['location']);
+      final w = town_c(doc['name'], doc['location']);
+      final n = town_d(doc['name'], doc['location']);
+      return ListTile(
+        title: Text(
+          towns.name,
+        ),
+        subtitle: Text(
+          towns.location,
+        ),
+        trailing: TextButton(
+          onPressed: _moreButton,
+          child: const Text('더보기'),
+        ),
+      );
     }
 
     Widget Signin() {
