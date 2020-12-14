@@ -68,9 +68,9 @@ Widget _buildItemWidget(DocumentSnapshot docs, int i) {
         _email = users.email.toString();
         _phone = users.phone.toString();
         return Text(
-          '\n\n   ' + users.name + '\n   ' + users.email + '\n',
+          '\n\n\n   ' + users.name + '님 환영합니다! \n\n',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             color: Colors.white,
           ),
           textAlign: TextAlign.left,
