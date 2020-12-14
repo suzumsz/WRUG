@@ -23,6 +23,8 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPage extends State<DetailsPage>{
 
+  final ScrollController _scrollController = ScrollController();
+
   Swiper imageSlider(context){//NETWork image 캐쉬
     return new Swiper(
       autoplay: true,
@@ -86,7 +88,8 @@ class _DetailsPage extends State<DetailsPage>{
             ),
             body: Padding(
                 padding: EdgeInsets.all(30.0),
-                child: Column(
+                child: ListView(
+                  controller: _scrollController,
                     children: <Widget>[
                       ButtonBar(
                         children: <Widget> [
