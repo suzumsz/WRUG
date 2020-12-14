@@ -30,6 +30,31 @@ class user {
   user(this.name, this.email, this.phone);
 }
 
+class town {
+  String name;
+  town(this.name);
+}
+
+class town_a {
+  String name;
+  town_a(this.name);
+}
+
+class town_b {
+  String name;
+  town_b(this.name);
+}
+
+class town_c {
+  String name;
+  town_c(this.name);
+}
+
+class town_d {
+  String name;
+  town_d(this.name);
+}
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _currentUser = FirebaseAuth.instance.currentUser;
 final _firestore = Firestore.instance;
@@ -109,6 +134,19 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  Widget _buildItemWidget(DocumentSnapshot doc) {
+    final towns = town(doc['name']);
+    final t = town_a(doc['name']);
+    final o = town_b(doc['name']);
+    final w = town_c(doc['name']);
+    final n = town_d(doc['name']);
+    return ListTile(
+      title: Text(
+        towns.name,
+      ),
+    );
+  }
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
@@ -248,742 +286,896 @@ class _MainPageState extends State<MainPage> {
     }
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text('',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: Stack(
-          children: <Widget>[
-            new Center(
-                child: new Column(
-              children: <Widget>[],
-            )),
-            Positioned(
-              //left: 0,
-              //top: 20,
-              child: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  scaffoldKey.currentState.openDrawer();
-                },
-                color: Colors.black45,
-              ),
-            ),
-          ],
-        ),
-      ),
-      key: scaffoldKey,
-      drawer: Drawer(
-        child: Container(
-          height: MediaQuery.of(context).size.height - 137,
-          color: Color.fromRGBO(137, 71, 184, 1),
-          child: ListView(
-            padding: EdgeInsets.zero,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text('',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: Stack(
             children: <Widget>[
-              if (_loginCheck == null) Signin() else _getDB(1),
-
-              mainBtn(),
-
-              if (_loginCheck != null) accountBtn() else registerBtn(),
-
-              // 로그인 여부에 따른 예약확인 유무
-              if (_loginCheck != null) fact_check(),
-
-              if (_loginCheck != null) box(250) else box(250),
-
-              // 로그인 전
-              if (_loginCheck == null) loginBtn() else logoutBtn(),
+              new Center(
+                  child: new Column(
+                children: <Widget>[],
+              )),
+              Positioned(
+                //left: 0,
+                //top: 20,
+                child: IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    scaffoldKey.currentState.openDrawer();
+                  },
+                  color: Colors.black45,
+                ),
+              ),
             ],
           ),
         ),
-      ),
-      //여기서부터 body
-      body: SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(right: 15, left: 15, bottom: 15),
-            child: Wrap(
-              children: List<Widget>.generate(
-                1,
-                (int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: FractionallySizedBox(
-                      widthFactor: 1.0,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: PrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              borderSide: BorderSide(
-                                width: 2,
-                                color: PrimaryColor,
-                              ),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: PrimaryColor,
-                            ),
-                            hintText: '체험마을을 검색해보세요.'),
-                        onSaved: (String value) {
-                          print('Value for field $index saved as "$value"');
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 15, left: 15),
-            child: Column(
-              children: [
-                DefaultTabController(
-                    length: 5,
-                    child: Column(children: <Widget>[
-                      TabBar(
-                        indicator: BoxDecoration(
-                          color: PrimaryColor,
-                        ),
-                        labelPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicatorColor: PrimaryColor,
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.black,
-                        tabs: [
-                          Container(
-                            width: 90,
-                            height: 80,
-                            child: Tab(
-                              child: Text(
-                                "수도권",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 90,
-                            height: 80,
-                            child: Tab(
-                              child: Text(
-                                "강원도",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 90,
-                            height: 80,
-                            child: Tab(
-                              child: Text(
-                                "전라도",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 90,
-                            height: 80,
-                            child: Tab(
-                              child: Text(
-                                "충청도",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 90,
-                            height: 80,
-                            child: Tab(
-                              child: Text(
-                                "경상도",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                          height: MediaQuery.of(context).size.height - (250),
-                          margin: const EdgeInsets.only(top: 10),
+        key: scaffoldKey,
+        drawer: Drawer(
+          child: Container(
+            height: MediaQuery.of(context).size.height - 137,
+            color: Color.fromRGBO(137, 71, 184, 1),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                if (_loginCheck == null) Signin() else _getDB(1),
 
-                          //height of TabBarView
+                mainBtn(),
 
-                          child: TabBarView(children: <Widget>[
-                            new ListView(
-                              //-------수도권
-                              children: <Widget>[
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '농사 체험',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '농사 체험',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            new ListView(
-                              //----------강원도
-                              children: <Widget>[
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            new ListView(
-                              //---------전라도
-                              children: <Widget>[
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            new ListView(
-                              //---------충청도
-                              children: <Widget>[
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            new ListView(
-                              //--------경상도
-                              children: <Widget>[
-                                Container(
-                                  height: 170,
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 15, top: 8),
-                                          title: const Text(
-                                            '두부 체험 마을',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 18,
-                                                    color: Color.fromRGBO(
-                                                        137, 71, 184, 1),
-                                                  ),
-                                                  Padding(
-                                                    child: Text(
-                                                      '$_location',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromRGBO(
-                                                            137, 71, 184, 1),
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                  ),
-                                                ],
-                                              )),
-                                          trailing: TextButton(
-                                            child: const Text(
-                                              '더보기',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            onPressed: _moreButton,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                            '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ]))
-                    ])),
+                if (_loginCheck != null) accountBtn() else registerBtn(),
+
+                // 로그인 여부에 따른 예약확인 유무
+                if (_loginCheck != null) fact_check(),
+
+                if (_loginCheck != null) box(250) else box(250),
+
+                // 로그인 전
+                if (_loginCheck == null) loginBtn() else logoutBtn(),
               ],
             ),
           ),
-        ],
-      ),
-      )
-    );
+        ),
+        //여기서부터 body
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 15, left: 15, bottom: 15),
+                child: Wrap(
+                  children: List<Widget>.generate(
+                    1,
+                    (int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: FractionallySizedBox(
+                          widthFactor: 1.0,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: PrimaryColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color: PrimaryColor,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: PrimaryColor,
+                                ),
+                                hintText: '체험마을을 검색해보세요.'),
+                            onSaved: (String value) {
+                              print('Value for field $index saved as "$value"');
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(right: 15, left: 15),
+                child: Column(
+                  children: [
+                    DefaultTabController(
+                        length: 5,
+                        child: Column(children: <Widget>[
+                          TabBar(
+                            indicator: BoxDecoration(
+                              color: PrimaryColor,
+                            ),
+                            labelPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            isScrollable: true,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicatorColor: PrimaryColor,
+                            labelColor: Colors.white,
+                            unselectedLabelColor: Colors.black,
+                            tabs: [
+                              Container(
+                                width: 90,
+                                height: 80,
+                                child: Tab(
+                                  child: Text(
+                                    "수도권",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 80,
+                                child: Tab(
+                                  child: Text(
+                                    "강원도",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 80,
+                                child: Tab(
+                                  child: Text(
+                                    "전라도",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 80,
+                                child: Tab(
+                                  child: Text(
+                                    "충청도",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 80,
+                                child: Tab(
+                                  child: Text(
+                                    "경상도",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                              height:
+                                  MediaQuery.of(context).size.height - (250),
+                              margin: const EdgeInsets.only(top: 10),
+
+                              //height of TabBarView
+
+                              child: TabBarView(children: <Widget>[
+                                new StreamBuilder<QuerySnapshot>(
+                                  stream: Firestore.instance
+                                      .collection('town')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    final documents = snapshot.data.documents;
+                                    return Expanded(
+                                      child: ListView(
+                                        children: documents
+                                            .map((doc) => _buildItemWidget(doc))
+                                            .toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                /*new ListView(
+                                  //-------수도권
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '농사 체험',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '농사 체험',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '농사를 직접 체험해보며 농부가 흘리는 땀방울의 소중함을 느껴보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),*/
+                                new StreamBuilder<QuerySnapshot>(
+                                  stream: Firestore.instance
+                                      .collection('town_a')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    final documents = snapshot.data.documents;
+                                    return Expanded(
+                                      child: ListView(
+                                        children: documents
+                                            .map((doc) => _buildItemWidget(doc))
+                                            .toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                /*  new ListView(
+                                  //----------강원도
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),*/
+                                new StreamBuilder<QuerySnapshot>(
+                                  stream: Firestore.instance
+                                      .collection('town_b')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    final documents = snapshot.data.documents;
+                                    return Expanded(
+                                      child: ListView(
+                                        children: documents
+                                            .map((doc) => _buildItemWidget(doc))
+                                            .toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                /*new ListView(
+                                  //---------전라도
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),*/
+                                new StreamBuilder<QuerySnapshot>(
+                                  stream: Firestore.instance
+                                      .collection('town_c')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    final documents = snapshot.data.documents;
+                                    return Expanded(
+                                      child: ListView(
+                                        children: documents
+                                            .map((doc) => _buildItemWidget(doc))
+                                            .toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                /*new ListView(
+                                  //---------충청도
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),*/
+                                new StreamBuilder<QuerySnapshot>(
+                                  stream: Firestore.instance
+                                      .collection('town_d')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    final documents = snapshot.data.documents;
+                                    return Expanded(
+                                      child: ListView(
+                                        children: documents
+                                            .map((doc) => _buildItemWidget(doc))
+                                            .toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                /*new ListView(
+                                  //--------경상도
+                                  children: <Widget>[
+                                    Container(
+                                      height: 170,
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 15, top: 8),
+                                              title: const Text(
+                                                '두부 체험 마을',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        size: 18,
+                                                        color: Color.fromRGBO(
+                                                            137, 71, 184, 1),
+                                                      ),
+                                                      Padding(
+                                                        child: Text(
+                                                          '$_location',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    137,
+                                                                    71,
+                                                                    184,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              trailing: TextButton(
+                                                child: const Text(
+                                                  '더보기',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                onPressed: _moreButton,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                '콩을 갈아 직접 두부를 만들어보고 만든 두부로 음식 또한 맛볼 수 있는 이색 체험을 경험해보세요!',
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),*/
+                              ]))
+                        ])),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
