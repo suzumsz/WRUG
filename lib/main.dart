@@ -126,7 +126,7 @@ Widget _getDB(int i) {
           return CircularProgressIndicator();
         }
         final documents = snapshot.data;
-        return Expanded(child: _UserWidget(documents, i));
+        return Row(children: [Expanded(child: _UserWidget(documents, i))]);
       });
 }
 
