@@ -314,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     _userName = context.watch<FirebaseAuthService>().userName;
-    _userEmail = context.watch<FirebaseAuthService>().count;
+    _userEmail = context.watch<FirebaseAuthService>().loginEmail;
     _userPhone = context.watch<FirebaseAuthService>().userPhone;
     _userDate = context.watch<FirebaseAuthService>().userDate;
     _userPeople = context.watch<FirebaseAuthService>().userPeople;

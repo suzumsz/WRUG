@@ -60,7 +60,7 @@ class _DetailsPage extends State<DetailsPage>{
 
   @override
   Widget build(BuildContext context) {
-    var _loginCheck = context.watch<FirebaseAuthService>().count;
+    var _loginCheck = context.watch<FirebaseAuthService>().loginEmail;
     print("loginCheck: $_loginCheck");
     return MaterialApp(
         debugShowCheckedModeBanner: false,
