@@ -138,7 +138,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    var _loginCheck = context.watch<FirebaseAuthService>().count;
+    var _loginCheck = context.watch<FirebaseAuthService>().loginEmail;
     var _ResCheck = context.watch<FirebaseAuthService>().userDate;
     print("loginCheck: $_loginCheck");
     void _moreButton() {

@@ -434,7 +434,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(_userName);
     _userPhone = context.watch<FirebaseAuthService>().userPhone;
     print(_userPhone);
-    _userEmail = context.watch<FirebaseAuthService>().count;
+    _userEmail = context.watch<FirebaseAuthService>().loginEmail;
     print(_userEmail);
     return MaterialApp(
       theme: ThemeData(

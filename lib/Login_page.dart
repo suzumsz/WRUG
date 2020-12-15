@@ -15,20 +15,20 @@ class LoginPage extends StatefulWidget {
 String email;
 
 class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
-  String _loginemail;
+  String _loginEmail;
   String _userName;
   String _userPhone;
   String _userPeople;
   String _userDate;
 
-  String get count => _loginemail;
+  String get loginEmail => _loginEmail;
   String get userName => _userName;
   String get userPhone => _userPhone;
   String get userPeople => _userPeople;
   String get userDate => _userDate;
 
   void increment(email){
-    _loginemail = '$email';
+    _loginEmail = '$email';
     notifyListeners();
   }
   void incrementName(name){
@@ -49,7 +49,7 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void decrement(){
-    _loginemail = null;
+    _loginEmail = null;
     notifyListeners();
   }
   void decrementName(){
