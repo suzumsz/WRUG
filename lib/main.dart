@@ -52,6 +52,9 @@ class town_d {
   town_d(this.name, this.location, this.content);
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _currentUser = FirebaseAuth.instance.currentUser;
+final _firestore = Firestore.instance;
 //provider패키지 이용
 String _email;
 String _name;
@@ -89,6 +92,44 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
+Widget _UserWidget(DocumentSnapshot docs, int i) {
+  final users = user(docs['name'], docs['email'], docs['phone']);
+
+  user(users.name, users.email, users.phone);
+
+  switch (i) {
+    case 1:
+      {
+        _name = users.name.toString();
+        _email = users.email.toString();
+        _phone = users.phone.toString();
+        return Text(
+          '\n\n\n   ' + users.name + '님 환영합니다! \n\n',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.left,
+        );
+      }
+      break;
+
+    default:
+  }
+}
+
+Widget _getDB(int i) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        final documents = snapshot.data;
+        return Expanded(child: _UserWidget(documents, i));
+      });
+}
+
 class _MainPageState extends State<MainPage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -97,9 +138,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final _currentUser = FirebaseAuth.instance.currentUser;
-    final _firestore = Firestore.instance;
     var _loginCheck = context.watch<FirebaseAuthService>().count;
     var _ResCheck = context.watch<FirebaseAuthService>().userDate;
     print("loginCheck: $_loginCheck");
@@ -111,45 +149,6 @@ class _MainPageState extends State<MainPage> {
       }
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DetailsPage()));
-    }
-
-    Widget _UserWidget(DocumentSnapshot docs, int i) {
-      final users = user(docs['name'], docs['email'], docs['phone']);
-
-      user(users.name, users.email, users.phone);
-
-      switch (i) {
-        case 1:
-          {
-            _name = users.name.toString();
-            _email = users.email.toString();
-            _phone = users.phone.toString();
-            return Text(
-              '\n\n\n   ' + users.name + '님 환영합니다! \n\n',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.left,
-            );
-          }
-          break;
-
-        default:
-      }
-    }
-
-    Widget _getDB(int i) {
-      return StreamBuilder<DocumentSnapshot>(
-          stream:
-              _firestore.collection("user").doc(_currentUser.email).snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            }
-            final documents = snapshot.data;
-            return Expanded(child: _UserWidget(documents, i));
-          });
     }
 
     Widget _buildItemWidget(DocumentSnapshot doc) {
