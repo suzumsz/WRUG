@@ -10,12 +10,14 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
-    ],
-    child: CheckPage(),
-  ),);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+      ],
+      child: CheckPage(),
+    ),
+  );
 }
 
 String _userName;
@@ -23,7 +25,6 @@ String _userEmail;
 String _userPhone;
 String _userPeople;
 String _userDate;
-
 
 class user {
   String name;
@@ -118,7 +119,7 @@ Widget _getDB(int i) {
           return CircularProgressIndicator();
         }
         final documents = snapshot.data;
-        return Expanded(child: _buildItemWidget(documents, i));
+        return Row(children: [Expanded(child: _buildItemWidget(documents, i))]);
       });
 }
 
@@ -204,8 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   subtitle: Text('$_userEmail'),
                   trailing: RaisedButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ReservationPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReservationPage()));
                     },
                     child: Text('예약정보수정', style: TextStyle(fontSize: 13)),
                     textColor: Colors.white,
@@ -258,7 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text(_userDate.substring(0,10)),
+                          title: Text(_userDate.substring(0, 10)),
                           /*Text('$date',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black54)),*/

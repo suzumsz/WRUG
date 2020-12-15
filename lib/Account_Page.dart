@@ -124,7 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return CircularProgressIndicator();
           }
           final documents = snapshot.data;
-          return Expanded(child: _buildItemWidget(documents, i));
+          return Row(
+              children: [Expanded(child: _buildItemWidget(documents, i))]);
         });
   }
 
