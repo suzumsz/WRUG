@@ -23,51 +23,35 @@ Future<void> main() async {
 }
 
 class user {
-  String name;
-  String email;
-  String phone;
-
+  String name, email, phone;
   user(this.name, this.email, this.phone);
 }
 
 class town {
-  String name;
-  String location;
-  String content;
+  String name, location, content;
   town(this.name, this.location, this.content);
 }
 
 class town_a {
-  String name;
-  String location;
-  String content;
+  String name, location, content;
   town_a(this.name, this.location, this.content);
 }
 
 class town_b {
-  String location;
-  String name;
-  String content;
+  String location, name, content;
   town_b(this.name, this.location, this.content);
 }
 
 class town_c {
-  String location;
-  String name;
-  String content;
+  String location, name, content;
   town_c(this.name, this.location, this.content);
 }
 
 class town_d {
-  String location;
-  String name;
-  String content;
+  String location, name, content;
   town_d(this.name, this.location, this.content);
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final _currentUser = FirebaseAuth.instance.currentUser;
-final _firestore = Firestore.instance;
 //provider패키지 이용
 String _email;
 String _name;
@@ -89,44 +73,6 @@ class MyApp extends StatelessWidget {
       home: MainPage(title: '메인 페이지'),
     );
   }
-}
-
-Widget _buildItemWidget(DocumentSnapshot docs, int i) {
-  final users = user(docs['name'], docs['email'], docs['phone']);
-
-  user(users.name, users.email, users.phone);
-
-  switch (i) {
-    case 1:
-      {
-        _name = users.name.toString();
-        _email = users.email.toString();
-        _phone = users.phone.toString();
-        return Text(
-          '\n\n\n   ' + users.name + '님 환영합니다! \n\n',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-          textAlign: TextAlign.left,
-        );
-      }
-      break;
-
-    default:
-  }
-}
-
-Widget _getDB(int i) {
-  return StreamBuilder<DocumentSnapshot>(
-      stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
-        }
-        final documents = snapshot.data;
-        return Expanded(child: _buildItemWidget(documents, i));
-      });
 }
 
 class AppState {
@@ -151,6 +97,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final _currentUser = FirebaseAuth.instance.currentUser;
+    final _firestore = Firestore.instance;
     var _loginCheck = context.watch<FirebaseAuthService>().count;
     var _ResCheck = context.watch<FirebaseAuthService>().userDate;
     print("loginCheck: $_loginCheck");
@@ -162,6 +111,45 @@ class _MainPageState extends State<MainPage> {
       }
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DetailsPage()));
+    }
+
+    Widget _UserWidget(DocumentSnapshot docs, int i) {
+      final users = user(docs['name'], docs['email'], docs['phone']);
+
+      user(users.name, users.email, users.phone);
+
+      switch (i) {
+        case 1:
+          {
+            _name = users.name.toString();
+            _email = users.email.toString();
+            _phone = users.phone.toString();
+            return Text(
+              '\n\n\n   ' + users.name + '님 환영합니다! \n\n',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.left,
+            );
+          }
+          break;
+
+        default:
+      }
+    }
+
+    Widget _getDB(int i) {
+      return StreamBuilder<DocumentSnapshot>(
+          stream:
+              _firestore.collection("user").doc(_currentUser.email).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return CircularProgressIndicator();
+            }
+            final documents = snapshot.data;
+            return Expanded(child: _UserWidget(documents, i));
+          });
     }
 
     Widget _buildItemWidget(DocumentSnapshot doc) {
@@ -201,9 +189,6 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ],
                 )),
-            //Text(
-            // '\n' + towns.location + '\n\n' + towns.content + '\n',
-            //),
             trailing: TextButton(
               onPressed: _moreButton,
               child: const Text(
@@ -560,13 +545,16 @@ class _MainPageState extends State<MainPage> {
                                       return CircularProgressIndicator();
                                     }
                                     final documents = snapshot.data.documents;
-                                    return Expanded(
-                                      child: ListView(
-                                        children: documents
-                                            .map((doc) => _buildItemWidget(doc))
-                                            .toList(),
+                                    return Row(children: [
+                                      Expanded(
+                                        child: ListView(
+                                          children: documents
+                                              .map((doc) =>
+                                                  _buildItemWidget(doc))
+                                              .toList(),
+                                        ),
                                       ),
-                                    );
+                                    ]);
                                   },
                                 ),
                                 //강원도
@@ -579,13 +567,16 @@ class _MainPageState extends State<MainPage> {
                                       return CircularProgressIndicator();
                                     }
                                     final documents = snapshot.data.documents;
-                                    return Expanded(
-                                      child: ListView(
-                                        children: documents
-                                            .map((doc) => _buildItemWidget(doc))
-                                            .toList(),
+                                    return Row(children: [
+                                      Expanded(
+                                        child: ListView(
+                                          children: documents
+                                              .map((doc) =>
+                                                  _buildItemWidget(doc))
+                                              .toList(),
+                                        ),
                                       ),
-                                    );
+                                    ]);
                                   },
                                 ),
                                 //전라도
@@ -598,13 +589,16 @@ class _MainPageState extends State<MainPage> {
                                       return CircularProgressIndicator();
                                     }
                                     final documents = snapshot.data.documents;
-                                    return Expanded(
-                                      child: ListView(
-                                        children: documents
-                                            .map((doc) => _buildItemWidget(doc))
-                                            .toList(),
+                                    return Row(children: [
+                                      Expanded(
+                                        child: ListView(
+                                          children: documents
+                                              .map((doc) =>
+                                                  _buildItemWidget(doc))
+                                              .toList(),
+                                        ),
                                       ),
-                                    );
+                                    ]);
                                   },
                                 ),
                                 //충청도
@@ -617,13 +611,16 @@ class _MainPageState extends State<MainPage> {
                                       return CircularProgressIndicator();
                                     }
                                     final documents = snapshot.data.documents;
-                                    return Expanded(
-                                      child: ListView(
-                                        children: documents
-                                            .map((doc) => _buildItemWidget(doc))
-                                            .toList(),
+                                    return Row(children: [
+                                      Expanded(
+                                        child: ListView(
+                                          children: documents
+                                              .map((doc) =>
+                                                  _buildItemWidget(doc))
+                                              .toList(),
+                                        ),
                                       ),
-                                    );
+                                    ]);
                                   },
                                 ),
                                 //경상도
@@ -636,13 +633,16 @@ class _MainPageState extends State<MainPage> {
                                       return CircularProgressIndicator();
                                     }
                                     final documents = snapshot.data.documents;
-                                    return Expanded(
-                                      child: ListView(
-                                        children: documents
-                                            .map((doc) => _buildItemWidget(doc))
-                                            .toList(),
+                                    return Row(children: [
+                                      Expanded(
+                                        child: ListView(
+                                          children: documents
+                                              .map((doc) =>
+                                                  _buildItemWidget(doc))
+                                              .toList(),
+                                        ),
                                       ),
-                                    );
+                                    ]);
                                   },
                                 ),
                               ]))
