@@ -80,6 +80,8 @@ class _DetailsPage extends State<DetailsPage> {
           .get())
           .data()
           .toString();
+      String townStory = data1.substring(60, 97);
+      print('print: $townStory');
       return data1;
     }
     /* void _getData() {
@@ -101,7 +103,6 @@ class _DetailsPage extends State<DetailsPage> {
       return Text(towns.name,
           textAlign: TextAlign.left, style: TextStyle(fontSize: 28));
     }*/
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -133,13 +134,14 @@ class _DetailsPage extends State<DetailsPage> {
                     children: [
                       Container(
                         width: 250,
-                        height: 200,
+                        height: 50,
                         child: FutureBuilder(
                           future: data2(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             print(snapshot.data);
-                            return Text(snapshot.data);
+                            String townStory = snapshot.data.toString();
+                            return Text(''+townStory.substring(7, 16), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),);
                           },
                         ),
                       ),
@@ -173,14 +175,33 @@ class _DetailsPage extends State<DetailsPage> {
                   ),
                   Container(
                     width: 250.0,
-                    child: Text(
-                      '$_story',
-                      style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    child: FutureBuilder(
+                      future: data2(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot snapshot) {
+                        print(snapshot.data);
+                        String townStory = snapshot.data.toString();
+                        return Text(townStory.substring(28, 50), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),);
+                      },
                     ),
                   ),
                   SizedBox(
-                    height: 100.0,
+                    height: 20.0,
+                  ),
+                  Container(
+                    width: 200.0,
+                    child: FutureBuilder(
+                      future: data2(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot snapshot) {
+                        print(snapshot.data);
+                        String townStory = snapshot.data.toString();
+                        return Text(townStory.substring(60, 85)+'\n'+townStory.substring(85, 97), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),);
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50.0,
                   ),
                   Container(
                       width: 320,
