@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
@@ -7,13 +8,19 @@ import 'main.dart';
 import 'package:badges/badges.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
-    ],
-    child: DetailsPage(),
-  ),
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FirebaseAuthService()),
+      ],
+      child: DetailsPage(),
+    ),
   );
+}
+
+class town {
+  String name;
+  town(this.name);
 }
 
 class DetailsPage extends StatefulWidget {
@@ -21,14 +28,17 @@ class DetailsPage extends StatefulWidget {
   _DetailsPage createState() => _DetailsPage();
 }
 
-class _DetailsPage extends State<DetailsPage>{
-
+class _DetailsPage extends State<DetailsPage> {
   final ScrollController _scrollController = ScrollController();
 
-  Swiper imageSlider(context){//NETWork image 캐쉬
+  String name;
+  String address;
+
+  Swiper imageSlider(context) {
+    //NETWork image 캐쉬
     return new Swiper(
       autoplay: true,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return new Image.network(
           "https://images.unsplash.com/photo-1595445364671-15205e6c380c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=764&q=80",
           fit: BoxFit.fitHeight,
@@ -61,7 +71,37 @@ class _DetailsPage extends State<DetailsPage>{
   @override
   Widget build(BuildContext context) {
     var _loginCheck = context.watch<FirebaseAuthService>().loginEmail;
-    print("loginCheck: $_loginCheck");
+    final _firestore = Firestore.instance;
+
+    Future<String> data2() async {
+      var data1 = (await Firestore.instance
+          .collection('town')
+          .document('A7t9UCR2cqUzV8GLvUDj')
+          .get())
+          .data()
+          .toString();
+      return data1;
+    }
+    /* void _getData() {
+      _firestore
+          .collection("town")
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((f) => print('이거보슈: ${f.id[1]}'));
+      });
+    }*/
+
+    //var _loginCheck = context.watch<FirebaseAuthService>().count;
+
+    //print("loginCheck: $_loginCheck");
+
+    /* Widget _buildItemWidget(DocumentSnapshot doc) {
+      final towns = town(doc['name']);
+
+      return Text(towns.name,
+          textAlign: TextAlign.left, style: TextStyle(fontSize: 28));
+    }*/
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -80,135 +120,94 @@ class _DetailsPage extends State<DetailsPage>{
               elevation: 0.0,
               leading: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => MyApp()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyApp()));
                   },
                   color: Colors.black45,
                   icon: Icon(Icons.arrow_back)),
             ),
             body: Padding(
-                padding: EdgeInsets.all(30.0),
-                child: ListView(
-                  controller: _scrollController,
-                    children: <Widget>[
-                      ButtonBar(
-                        children: <Widget> [
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Container(
-                            width: 230,
-                            child: Text('$_title', textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 30)),
-                          ),
-                          RaisedButton(
-                            child: Text('예약하기', style: TextStyle(fontSize: 18),),
-                            onPressed: () {
-                              if(_loginCheck != null) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ReservationPage()));
-                              } else{
-                                _LoginError();
-                              }
-                            },
-                            color: PrimaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
+                padding: EdgeInsets.all(15.0),
+                child: ListView(children: <Widget>[
+                  Row(
+                    children: [
                       Container(
-                        width: 300.0,
-                        child: Text('$_story', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        width: 250,
+                        height: 200,
+                        child: FutureBuilder(
+                          future: data2(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            print(snapshot.data);
+                            return Text(snapshot.data);
+                          },
+                        ),
                       ),
-                      SizedBox(
-                        height: 30.0,
+                      RaisedButton(
+                        child: Text(
+                          '예약하기',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        onPressed: () {
+                          //_getData();
+                          if (_loginCheck != null) {
+                            //context.read<FirebaseAuthService>().townName(name);
+                            //context.read<FirebaseAuthService>().townAddress(address);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReservationPage()));
+                          } else {
+                            _LoginError();
+                          }
+                        },
+                        color: PrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                       ),
-                      Container(
-                          width: 320,
-                          child: Row(
-                            children: <Widget> [
-                              Icon(Icons.location_on, color: Color.fromRGBO(137,71,184,1),),
-                              Text('$_location', style: TextStyle(color: Color.fromRGBO(137,71,184,1), fontWeight: FontWeight.bold, fontSize: 16),)
-                            ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Container(
+                    width: 250.0,
+                    child: Text(
+                      '$_story',
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100.0,
+                  ),
+                  Container(
+                      width: 320,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_on,
+                            color: Color.fromRGBO(137, 71, 184, 1),
+                          ),
+                          Text(
+                            '$_location',
+                            style: TextStyle(
+                                color: Color.fromRGBO(137, 71, 184, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
                           )
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('체험마을', style: TextStyle(color: Colors.white)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('인천광역시', style: TextStyle(color: Colors.white)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('인천체험마을', style: TextStyle(color: Colors.white)),
-                          ),
                         ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('강화도', style: TextStyle(color: Colors.white)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('감자캐기', style: TextStyle(color: Colors.white)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Chip(
-                            padding: EdgeInsets.all(0),
-                            backgroundColor: PrimaryColor,
-                            label: Text('감자', style: TextStyle(color: Colors.white)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Container(
-                        constraints: BoxConstraints.expand(
-                          height: 300,
-                        ),child: imageSlider(context),
-                      ),
-                    ]
-                )
-            )
-        )
-    );
+                      )),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    constraints: BoxConstraints.expand(
+                      height: 300,
+                    ),
+                    child: imageSlider(context),
+                  ),
+                ]))));
   }
-
 }

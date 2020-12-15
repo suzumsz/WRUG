@@ -27,6 +27,8 @@ int _people = 0;
 String _userName;
 String _userPhone;
 String _userEmail;
+String _townName;
+String _townAddress;
 
 class ReservationPage extends StatelessWidget {
   //StatefulWidget
@@ -253,11 +255,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       scale: 1,
                     ),
                     title: Text(
-                      '체험마을 이름',
+                      '$_townName',
                       style: TextStyle(fontSize: 30),
                     ),
                     subtitle: Text(
-                      '체험마을 주소 ex) 강원도 창원 어디어디',
+                      '$_townAddress',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -436,6 +438,8 @@ class _MyHomePageState extends State<MyHomePage> {
     print(_userPhone);
     _userEmail = context.watch<FirebaseAuthService>().loginEmail;
     print(_userEmail);
+    _townName = context.watch<FirebaseAuthService>().townName;
+    _townAddress = context.watch<FirebaseAuthService>().townAddress;
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),
