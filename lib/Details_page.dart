@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'Login_page.dart';
 import 'Reservation_Page.dart';
 import 'main.dart';
-import 'package:badges/badges.dart';
 
 void main() {
   runApp(
@@ -170,9 +169,9 @@ class _DetailsPage extends State<DetailsPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 15.0,
+                    height: 20.0,
                   ),
-                  Container(
+                  /*Container(
                     width: 250.0,
                     child: FutureBuilder(
                       future: data2(),
@@ -185,7 +184,7 @@ class _DetailsPage extends State<DetailsPage> {
                   ),
                   SizedBox(
                     height: 20.0,
-                  ),
+                  ), */
                   Container(
                     width: 200.0,
                     child: FutureBuilder(
@@ -193,7 +192,7 @@ class _DetailsPage extends State<DetailsPage> {
                       builder:
                           (BuildContext context, AsyncSnapshot snapshot) {
                         String townStory = snapshot.data.toString();
-                        return Text(townStory.substring(60, 85)+'\n'+townStory.substring(85, 97), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),);
+                        return Text(townStory.substring(60, 85)+'\n'+townStory.substring(85, 97), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),);
                       },
                     ),
                   ),
@@ -208,13 +207,16 @@ class _DetailsPage extends State<DetailsPage> {
                             Icons.location_on,
                             color: Color.fromRGBO(137, 71, 184, 1),
                           ),
-                          Text(
-                            '$_location',
-                            style: TextStyle(
-                                color: Color.fromRGBO(137, 71, 184, 1),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          )
+                          FutureBuilder(
+                            future: data2(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              print(snapshot.data);
+                              String townStory = snapshot.data.toString();
+                              return Text(townStory.substring(28, 50),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color.fromRGBO(137, 71, 184, 1)),);
+                            },
+                          ),
                         ],
                       )),
                   SizedBox(
