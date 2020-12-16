@@ -333,7 +333,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Color.fromRGBO(168, 114, 207, 1),
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
+                            borderRadius: BorderRadius.circular(5.0)),
                       ),
                     ),
                     SizedBox(
@@ -355,11 +355,11 @@ class _MyHomePageState extends State<MyHomePage> {
             child: RaisedButton(
               onPressed: () {
                 if (_people == 0) {
-                  print('인원을 선택해주세요');
+                  print('인원을 선택해주세요.');
                   error = '인원을 ';
                   _showDialog();
                 } else if (_selectedTime == null) {
-                  print('날짜를 선택해주세요');
+                  print('날짜를 선택해주세요.');
                   error = '날짜를 ';
                   _showDialog();
                 } else {
@@ -387,7 +387,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color.fromRGBO(168, 114, 207, 1),
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
             ),
           ),

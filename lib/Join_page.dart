@@ -294,7 +294,7 @@ class _JoinPageState extends State<JoinPage> {
                     color: Color.fromRGBO(168, 114, 207, 1),
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                        borderRadius: BorderRadius.circular(5.0)),
                   ),
                 ),
                 SizedBox(
