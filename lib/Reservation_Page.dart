@@ -36,6 +36,7 @@ class ReservationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -441,6 +442,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _townName = context.watch<FirebaseAuthService>().townName;
     _townAddress = context.watch<FirebaseAuthService>().townAddress;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),
         //primarySwatch: Colors.purple,
