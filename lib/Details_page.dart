@@ -80,8 +80,8 @@ class _DetailsPage extends State<DetailsPage> {
           .get())
           .data()
           .toString();
-      String townStory = data1.substring(60, 97);
-      print('print: $townStory');
+      name = data1.substring(7, 16).toString();
+      address = data1.substring(28, 50).toString();
       return data1;
     }
     /* void _getData() {
@@ -139,7 +139,6 @@ class _DetailsPage extends State<DetailsPage> {
                           future: data2(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
-                            print(snapshot.data);
                             String townStory = snapshot.data.toString();
                             return Text(''+townStory.substring(7, 16), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),);
                           },
@@ -153,8 +152,8 @@ class _DetailsPage extends State<DetailsPage> {
                         onPressed: () {
                           //_getData();
                           if (_loginCheck != null) {
-                            //context.read<FirebaseAuthService>().townName(name);
-                            //context.read<FirebaseAuthService>().townAddress(address);
+                            context.read<FirebaseAuthService>().incrementTownName(name);
+                            context.read<FirebaseAuthService>().incrementTownAddress(address);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -179,7 +178,6 @@ class _DetailsPage extends State<DetailsPage> {
                       future: data2(),
                       builder:
                           (BuildContext context, AsyncSnapshot snapshot) {
-                        print(snapshot.data);
                         String townStory = snapshot.data.toString();
                         return Text(townStory.substring(28, 50), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),);
                       },
@@ -194,7 +192,6 @@ class _DetailsPage extends State<DetailsPage> {
                       future: data2(),
                       builder:
                           (BuildContext context, AsyncSnapshot snapshot) {
-                        print(snapshot.data);
                         String townStory = snapshot.data.toString();
                         return Text(townStory.substring(60, 85)+'\n'+townStory.substring(85, 97), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),);
                       },

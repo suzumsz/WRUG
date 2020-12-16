@@ -35,6 +35,9 @@ dependencies:
   cloud_firestore: ^0.14.4
   badges: ^1.1.5
   provider: ^4.3.2+3
+  uuid: ^2.2.2
+  path_provider: ^1.6.24
+  permission_handler: ^4.4.0+hotfix.2
 
 
 dev_dependencies:

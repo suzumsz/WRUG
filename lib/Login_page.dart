@@ -4,9 +4,13 @@ import 'main.dart';
 import 'Join_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
 const SubColor = Color.fromRGBO(241, 230, 250, 1);
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _firestore = Firestore.instance;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,14 +19,16 @@ class LoginPage extends StatefulWidget {
 String email;
 
 class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
-  String _loginEmail;
-  String _userName;
-  String _userPhone;
-  String _userPeople;
-  String _userDate;
+  bool _loggedIn = false; // 로그인 상태
+  String _loginEmail;     // 사용자 이메일
+  String _userName;       // 사용자 이름
+  String _userPhone;      // 사용자 전화번호
+  String _userPeople;     // 인원수
+  String _userDate;       // 예약날짜
   String _townName;
   String _townAddress;
 
+  bool get loggedIn => _loggedIn;
   String get loginEmail => _loginEmail;
   String get userName => _userName;
   String get userPhone => _userPhone;
@@ -31,16 +37,31 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
   String get townName => _townName;
   String get townAddress => _townAddress;
 
-  void increment(email){
-    _loginEmail = '$email';
+  // 로그인 후 이부분에서 firebase인증처리가 이루어져야함
+  Future<void> updateLoggedIn() async {
+    print('로그인 정보 등록');
+    final User user = await _auth.currentUser;
+
+    var document = _firestore.collection('user').document(user.email).get();
+    await document.then((doc) {
+      _loggedIn = true;
+      _loginEmail = user.email;
+      _userName = doc['name'];
+      _userPhone = doc['phone'];
+    });
+
     notifyListeners();
   }
-  void incrementName(name){
-    _userName = '$name';
-    notifyListeners();
-  }
-  void incrementPhone(phone){
-    _userPhone = '$phone';
+
+  // 로그아웃
+  void updateLoggedOut() {
+    print('로그인 정보 삭제');
+    _loggedIn = false;
+    _loginEmail = null;
+    _userName = null;
+    _userPhone = null;
+    _userPeople = null;
+    _userDate = null;
     notifyListeners();
   }
   void incrementPeople(people){
@@ -59,62 +80,18 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
     _townAddress = '$address';
     notifyListeners();
   }
-
-  void decrement(){
-    _loginEmail = null;
-    notifyListeners();
-  }
-  void decrementName(){
-    _userName = null;
-    notifyListeners();
-  }
-  void decrementPhone(){
-    _userPhone = null;
-    notifyListeners();
-  }
-  void decrementPeople(){
-    _userPeople = null;
-    notifyListeners();
-  }
-  void decrementDate(){
-    _userDate = null;
-    notifyListeners();
-  }
-  /*
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('count', _loginemail));
-  }*/
-
-  FirebaseAuthService({auth}) : _auth = auth ?? FirebaseAuth.instance;
-  FirebaseAuth _auth;
-
-  Future<FirebaseUser> signInWithEmailAndPassword(
-      {@required String email, @required String password}) async {
-    final credential = EmailAuthProvider.getCredential(
-      email: email,
-      password: password,
-    );
-    final authResult = await _auth.signInWithCredential(credential);
-    return authResult.user;
-  }
 }
+
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FirebaseAuthService _auth;
-
   bool _success;
-  String _userEmail;
-  String _error;
 
   @override
   Widget build(BuildContext context) {
-    _auth = Provider.of<FirebaseAuthService>(context, listen:false);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -217,7 +194,6 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
                                   _signIn();
-                                  context.read<FirebaseAuthService>().increment(email);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -303,28 +279,30 @@ class _LoginPageState extends State<LoginPage> {
   //사용자 로그인 처리
   void _signIn() async {
     try {
-      final user = (await _auth.signInWithEmailAndPassword(
+      final User user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      ));
+      )).user;
 
       if (user != null) {
+        print('로그인 성공');
         setState(() {
           _success = true;
-          _userEmail = user.email;
-          email = user.email;
         });
+        context.read<FirebaseAuthService>().updateLoggedIn();
       } else {
         setState(() {
           _success = false;
         });
+        context.read<FirebaseAuthService>().updateLoggedOut();
       }
     } catch (e) {
       print(e);
       setState(() {
-        _error = e.toString();
         _success = false;
+        print('오류: ' + e.toString());
       });
+      context.read<FirebaseAuthService>().updateLoggedOut();
     }
   }
 }
