@@ -109,25 +109,24 @@ class _DetailsPage extends State<DetailsPage> {
             body: Padding(
                 padding: EdgeInsets.all(15.0),
                 child: ListView(children: <Widget>[
-                  Row(
-                    children: [
-                      Container(
-                        width: 250,
-                        height: 50,
-                        child: FutureBuilder(
-                          future: data2(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            String townStory = snapshot.data.toString();
-                            return Text(
-                              '' + townStory.substring(7, 16),
-                              style: TextStyle(
-                                  fontSize: 29, fontWeight: FontWeight.bold),
-                            );
-                          },
-                        ),
+                  Column(children: [
+                    ListTile(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      tileColor: Colors.white,
+                      title: FutureBuilder(
+                        future: data2(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          String townStory = snapshot.data.toString();
+                          return Text(
+                            townStory.substring(7, 16),
+                            style: TextStyle(
+                                fontSize: 29, fontWeight: FontWeight.bold),
+                          );
+                        },
                       ),
-                      RaisedButton(
+                      trailing: RaisedButton(
                         child: Text(
                           '예약하기',
                           style: TextStyle(fontSize: 14, color: Colors.white),
@@ -148,19 +147,21 @@ class _DetailsPage extends State<DetailsPage> {
                             _LoginError();
                           }
                         },
-                        color: PrimaryColor,
+                        color: Color.fromRGBO(168, 114, 207, 1),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ]),
                   SizedBox(
                     height: 20.0,
                   ),
-                  Container(
-                    width: 200.0,
-                    child: FutureBuilder(
+                  ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                    tileColor: Colors.white,
+                    subtitle: FutureBuilder(
                       future: data2(),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         String townStory = snapshot.data.toString();
