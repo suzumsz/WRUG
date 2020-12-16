@@ -25,6 +25,7 @@ String _userEmail;
 String _userPhone;
 String _userPeople;
 String _userDate;
+String _townName;
 
 class user {
   String name;
@@ -223,10 +224,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   width: 370,
-                  height: 480,
                   child: Card(
                     child: Column(
                       children: [
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.home,
+                              color: Color.fromRGBO(137, 71, 184, 1)),
+                          title: Text(
+                            '$_townName',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          subtitle: Text('체험마을',
+                              style: TextStyle(color: Colors.black54)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Divider(height: 1.0),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -288,9 +305,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             '$_userPeople명',
                             style: TextStyle(fontSize: 18),
                           ),
-                          /*Text('4명',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),*/
                           subtitle: Text('인원',
                               style: TextStyle(color: Colors.black54)),
                         ),
@@ -327,6 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _userPhone = context.watch<FirebaseAuthService>().userPhone;
     _userDate = context.watch<FirebaseAuthService>().userDate;
     _userPeople = context.watch<FirebaseAuthService>().userPeople;
+    _townName = context.watch<FirebaseAuthService>().townName;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

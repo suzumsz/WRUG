@@ -99,10 +99,14 @@ class _MyHomePageState extends State<MyHomePage> {
           return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
-              title: new Text("예약이 완료되었습니다"),
+              title: new Text("'" + '$_townName' + "'" + " 예약이 완료되었습니다."),
               actions: <Widget>[
                 new FlatButton(
-                  child: new Text("확인", style: TextStyle(color: PrimaryColor)),
+                  child: new Text("확인",
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: PrimaryColor,
+                          fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -383,7 +387,8 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color.fromRGBO(168, 114, 207, 1),
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
             ),
           ),
           Container(

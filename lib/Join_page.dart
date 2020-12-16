@@ -80,7 +80,7 @@ class _JoinPageState extends State<JoinPage> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color.fromRGBO(168, 114, 207, 1),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
@@ -122,6 +122,7 @@ class _JoinPageState extends State<JoinPage> {
                           RegExp("[a-zA-Z가-하각-힇ㄱ-ㅎㅏ-ㅣ]")),
                     ],
                     decoration: InputDecoration(
+                      focusColor: PrimaryColor,
                       border: OutlineInputBorder(),
                       hintText: "이름을 입력해주세요.",
                     ),

@@ -224,15 +224,12 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 16,
                               ),
-                              //Text(_error == null
-                              //    ? ''
-                              //    : _error),
                             ],
                           ),
                         ),
 
                         SizedBox(
-                          height: 20.0,
+                          height: 10.0,
                         ),
                         Container(
                             width: 1000,
