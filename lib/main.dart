@@ -8,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
@@ -55,14 +53,8 @@ class town_d {
   town_d(this.name, this.location, this.content);
 }
 
-
-//final _currentUser = FirebaseAuth.instance.currentUser;
-//final _firestore = Firestore.instance;
-
 String _email;
 String _phone;
-final _location = '인천광역시 강화군 불은면 강화동로 416';
-//final app = AppState(false, null);
 
 class MyApp extends StatelessWidget {
   @override
@@ -118,105 +110,17 @@ class _MainPageState extends State<MainPage> {
 
   // 퍼미션 검사
   Future<bool> _requestPermissions() async {
-    var permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    var permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
 
     if (permission != PermissionStatus.granted) {
       await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-      permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+      permission = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.storage);
     }
 
     return permission == PermissionStatus.granted;
   }
-
-  /*
-  Future<void> _getUser(DocumentSnapshot docs) async {
-    final users = user(docs['name'], docs['email'], docs['phone']);
-    user(users.name, users.email, users.phone);
-    print('users: $users');
-
-    if (users.email != null) {
-      var usersEmail = users.email.toString();
-      var usersName = users.name.toString();
-      print('로그인 되었음, $usersEmail, $usersName');
-      setState(() {
-        var uuid = Uuid();
-        var v4 = uuid.v4();
-        //_name = users.name;
-        _name = v4;
-      });
-    } else {
-      print('로그아웃 되었음');
-    }
-  }
-  */
-
-  /*
-  Widget _UserWidget(DocumentSnapshot docs, int i) {
-    //final users = user(docs['name'], docs['email'], docs['phone']);
-    //user(users.name, users.email, users.phone);
-    //var _loggedIn = context.watch<FirebaseAuthService>().loggedIn;
-    //print('users: $users');
-
-    _getUser(docs);
-
-    switch (i) {
-      case 1:
-        {
-          //_name = users.name.toString();
-          //_email = users.email.toString();
-          //_phone = users.phone.toString();
-
-          return Text(
-            '\n\n\n   ' + _name + '님 환영합니다! \n\n',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.left,
-          );
-        }
-        break;
-
-      default:
-    }
-  }
-  */
-
-  /*
-  Widget _getDB(int i) {
-    bool _loggedIn = context.watch<FirebaseAuthService>().loggedIn;
-    if (_loggedIn) {
-      return StreamBuilder<DocumentSnapshot>(
-        stream: _firestore.collection("user").doc(_currentUser.email).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-          final documents = snapshot.data;
-          print(documents['name']);
-
-
-        });
-    }
-  }
-  */
-
-  /*
-  Future<void> _getUserName(loginEmail) async {
-    //String email = FirebaseAuth.instance.currentUser.email.toString();
-    //String email = context.watch<FirebaseAuthService>().loginEmail;
-    print('이메일: ' + loginEmail);
-    FirebaseFirestore.instance.collection('user').document(loginEmail).get().then((doc){
-      String name = doc['name'].toString();
-
-      if (name != null) {
-        setState(() {
-          _name = doc['name'].toString();
-        });
-      }
-    });
-  }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -228,8 +132,7 @@ class _MainPageState extends State<MainPage> {
     var _ResCheck = context.watch<FirebaseAuthService>().userDate;
 
     void _moreButton() {
-      if (_loginCheck != null) {
-      }
+      if (_loginCheck != null) {}
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DetailsPage()));
     }
@@ -420,6 +323,7 @@ class _MainPageState extends State<MainPage> {
     }
 
     return Scaffold(
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('',
@@ -434,8 +338,8 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               new Center(
                   child: new Column(
-                    children: <Widget>[],
-                  )),
+                children: <Widget>[],
+              )),
               Positioned(
                 //left: 0,
                 //top: 20,
@@ -460,14 +364,17 @@ class _MainPageState extends State<MainPage> {
               children: <Widget>[
                 //if (_loginCheck == null) Signin() else _getDB(1),
 
-                if (_userName == null) Signin() else Text(
-                  '\n\n\n   ' + _userName + '님 환영합니다! \n\n',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                if (_userName == null)
+                  Signin()
+                else
+                  Text(
+                    '\n\n\n   ' + _userName + '님 환영합니다! \n\n',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
-                ),
 
                 mainBtn(),
 
@@ -493,7 +400,7 @@ class _MainPageState extends State<MainPage> {
                 child: Wrap(
                   children: List<Widget>.generate(
                     1,
-                        (int index) {
+                    (int index) {
                       return Padding(
                         padding: const EdgeInsets.all(0.0),
                         child: FractionallySizedBox(
@@ -615,7 +522,7 @@ class _MainPageState extends State<MainPage> {
                           ),
                           Container(
                               height:
-                              MediaQuery.of(context).size.height - (250),
+                                  MediaQuery.of(context).size.height - (250),
                               margin: const EdgeInsets.only(top: 10),
 
                               //height of TabBarView
@@ -636,7 +543,7 @@ class _MainPageState extends State<MainPage> {
                                         child: ListView(
                                           children: documents
                                               .map((doc) =>
-                                              _buildItemWidget(doc))
+                                                  _buildItemWidget(doc))
                                               .toList(),
                                         ),
                                       ),
@@ -658,7 +565,7 @@ class _MainPageState extends State<MainPage> {
                                         child: ListView(
                                           children: documents
                                               .map((doc) =>
-                                              _buildItemWidget(doc))
+                                                  _buildItemWidget(doc))
                                               .toList(),
                                         ),
                                       ),
@@ -680,7 +587,7 @@ class _MainPageState extends State<MainPage> {
                                         child: ListView(
                                           children: documents
                                               .map((doc) =>
-                                              _buildItemWidget(doc))
+                                                  _buildItemWidget(doc))
                                               .toList(),
                                         ),
                                       ),
@@ -702,7 +609,7 @@ class _MainPageState extends State<MainPage> {
                                         child: ListView(
                                           children: documents
                                               .map((doc) =>
-                                              _buildItemWidget(doc))
+                                                  _buildItemWidget(doc))
                                               .toList(),
                                         ),
                                       ),
@@ -724,7 +631,7 @@ class _MainPageState extends State<MainPage> {
                                         child: ListView(
                                           children: documents
                                               .map((doc) =>
-                                              _buildItemWidget(doc))
+                                                  _buildItemWidget(doc))
                                               .toList(),
                                         ),
                                       ),

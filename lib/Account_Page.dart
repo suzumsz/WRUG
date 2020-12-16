@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
             users.name,
             style: TextStyle(
               fontSize: 18,
-              color: Colors.black54,
+              color: Colors.black87,
             ),
             textAlign: TextAlign.left,
           );
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Text(
             users.email,
             style: TextStyle(
-              color: Colors.black54,
+              color: Colors.black87,
             ),
             textAlign: TextAlign.left,
           );
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             users.phone,
             style: TextStyle(
               fontSize: 18,
-              color: Colors.black54,
+              color: Colors.black87,
             ),
             textAlign: TextAlign.left,
           );
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             users.birth,
             style: TextStyle(
               fontSize: 18,
-              color: Colors.black54,
+              color: Colors.black87,
             ),
             textAlign: TextAlign.left,
           );
@@ -108,11 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       default:
     }
-
-    /*_name = users.name;
-    _phone = users.phone;
-    _birth = users.birth;
-    _email = users.email; */
   }
 
   Widget _getDB(int i) {
@@ -153,12 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
                           title: _getDB(2),
-                          /* title: Text('$_email',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black54)), */
                           subtitle: Text('이메일',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -171,12 +162,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(Icons.account_circle,
                               color: Color.fromRGBO(137, 71, 184, 1)),
                           title: _getDB(1),
-                          /* title: Text('$_name',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black54)), */
                           subtitle: Text('이름',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -189,12 +176,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(Icons.phone,
                               color: Color.fromRGBO(137, 71, 184, 1)),
                           title: _getDB(3),
-                          /*title: Text('$_phone',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black54)), */
                           subtitle: Text('핸드폰',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -207,12 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
                           title: _getDB(4),
-                          /*title: Text('$_birth',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black54)),*/
                           subtitle: Text('생일',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -230,18 +209,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('내 정보',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+          title:
+              Text('내 정보', style: TextStyle(fontSize: 19, color: Colors.black)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0.0,

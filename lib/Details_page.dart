@@ -18,11 +18,6 @@ void main() {
   );
 }
 
-class town {
-  String name;
-  town(this.name);
-}
-
 class DetailsPage extends StatefulWidget {
   @override
   _DetailsPage createState() => _DetailsPage();
@@ -50,10 +45,6 @@ class _DetailsPage extends State<DetailsPage> {
     );
   }
 
-  final _title = '체험마을 이름';
-  final _story = '체험마을에 대한 설명\n저희 체험마을은 이런 곳 입니다.';
-  final _location = '인천광역시 강화군 불은면 강화동로 416';
-
   static const PrimaryColor = Color.fromRGBO(168, 114, 207, 1);
   static const SubColor = Color.fromRGBO(241, 230, 250, 1);
 
@@ -75,34 +66,16 @@ class _DetailsPage extends State<DetailsPage> {
 
     Future<String> data2() async {
       var data1 = (await Firestore.instance
-          .collection('town')
-          .document('A7t9UCR2cqUzV8GLvUDj')
-          .get())
+              .collection('town')
+              .document('A7t9UCR2cqUzV8GLvUDj')
+              .get())
           .data()
           .toString();
       name = data1.substring(7, 16).toString();
       address = data1.substring(28, 50).toString();
       return data1;
     }
-    /* void _getData() {
-      _firestore
-          .collection("town")
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
-        snapshot.documents.forEach((f) => print('이거보슈: ${f.id[1]}'));
-      });
-    }*/
 
-    //var _loginCheck = context.watch<FirebaseAuthService>().count;
-
-    //print("loginCheck: $_loginCheck");
-
-    /* Widget _buildItemWidget(DocumentSnapshot doc) {
-      final towns = town(doc['name']);
-
-      return Text(towns.name,
-          textAlign: TextAlign.left, style: TextStyle(fontSize: 28));
-    }*/
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -110,12 +83,10 @@ class _DetailsPage extends State<DetailsPage> {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               title: Text('체험 마을 상세보기',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 19, color: Colors.black)),
               centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
@@ -140,20 +111,27 @@ class _DetailsPage extends State<DetailsPage> {
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             String townStory = snapshot.data.toString();
-                            return Text(''+townStory.substring(7, 16), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),);
+                            return Text(
+                              '' + townStory.substring(7, 16),
+                              style: TextStyle(
+                                  fontSize: 29, fontWeight: FontWeight.bold),
+                            );
                           },
                         ),
                       ),
                       RaisedButton(
                         child: Text(
                           '예약하기',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                          style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                         onPressed: () {
-                          //_getData();
                           if (_loginCheck != null) {
-                            context.read<FirebaseAuthService>().incrementTownName(name);
-                            context.read<FirebaseAuthService>().incrementTownAddress(address);
+                            context
+                                .read<FirebaseAuthService>()
+                                .incrementTownName(name);
+                            context
+                                .read<FirebaseAuthService>()
+                                .incrementTownAddress(address);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -170,30 +148,25 @@ class _DetailsPage extends State<DetailsPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 15.0,
-                  ),
-                  Container(
-                    width: 250.0,
-                    child: FutureBuilder(
-                      future: data2(),
-                      builder:
-                          (BuildContext context, AsyncSnapshot snapshot) {
-                        String townStory = snapshot.data.toString();
-                        return Text(townStory.substring(28, 50), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),);
-                      },
-                    ),
-                  ),
-                  SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: 200.0,
                     child: FutureBuilder(
                       future: data2(),
-                      builder:
-                          (BuildContext context, AsyncSnapshot snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
                         String townStory = snapshot.data.toString();
-                        return Text(townStory.substring(60, 85)+'\n'+townStory.substring(85, 97), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),);
+                        return Text(
+                          townStory.substring(60, 85) +
+                              '\n' +
+                              townStory.substring(85, 110) +
+                              '\n' +
+                              townStory.substring(110, 135),
+                          style: TextStyle(
+                            fontSize: 19,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -201,22 +174,28 @@ class _DetailsPage extends State<DetailsPage> {
                     height: 50.0,
                   ),
                   Container(
-                      width: 320,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.location_on,
-                            color: Color.fromRGBO(137, 71, 184, 1),
-                          ),
-                          Text(
-                            '$_location',
+                    width: 320.0,
+                    child: Row(children: <Widget>[
+                      Icon(
+                        Icons.location_on,
+                        color: Color.fromRGBO(137, 71, 184, 1),
+                      ),
+                      FutureBuilder(
+                        future: data2(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          String townStory = snapshot.data.toString();
+                          return Text(
+                            townStory.substring(28, 50),
                             style: TextStyle(
                                 color: Color.fromRGBO(137, 71, 184, 1),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
-                          )
-                        ],
-                      )),
+                          );
+                        },
+                      ),
+                    ]),
+                  ),
                   SizedBox(
                     height: 20.0,
                   ),

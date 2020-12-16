@@ -91,30 +91,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _AlertDialog() {
-  showDialog(
-  context: context,
-  barrierDismissible: false,
-  builder: (BuildContext context) {
-  return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0)
-      ),
-      title: new Text("예약이 완료되었습니다"),
-      actions: <Widget>[
-        new FlatButton(
-            child: new Text("확인",
-              style: TextStyle(color: PrimaryColor)),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CheckPage()) //로그인 페이지로 이동
-            );
-          },
-        ),
-      ]
-  );
-  });
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              title: new Text("예약이 완료되었습니다"),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("확인", style: TextStyle(color: PrimaryColor)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CheckPage()) //로그인 페이지로 이동
+                        );
+                  },
+                ),
+              ]);
+        });
   }
 
   void _showDialog() {
@@ -151,27 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return null;
   }
 
-  /*void _showDatePicker() async {
-    Future<DateTime> selectedDate = showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2021),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
-    );
-    selectedDate.then((dateTime) {
-      date = '$dateTime';
-      var cutOut = date.split(' ');
-      finalDate = cutOut[0];
-      print('선택: $finalDate');
-    });
-  }*/
-
   void _checkPeople() {
     showModalBottomSheet(
         context: context,
@@ -190,10 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  padding: const EdgeInsets.symmetric(
-                      //horizontal: 16.0,
-                      //vertical: 5.0,
-                      ),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -204,13 +176,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CupertinoPicker(
                           itemExtent: 32,
                           onSelectedItemChanged: (int index) {
-
-
                             setState(() {
                               _people = index + 1;
                               totalMoney = _people * 16000;
-                              Money =
-                                  (formatCurrency.format(totalMoney)).toString();
+                              Money = (formatCurrency.format(totalMoney))
+                                  .toString();
                             });
                           },
                           children: <Widget>[
@@ -256,10 +226,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     title: Text(
                       '$_townName',
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 29),
                     ),
                     subtitle: Text(
-                      '$_townAddress',
+                      ' ' + '$_townAddress',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -325,8 +295,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       leading: Icon(Icons.supervisor_account_rounded,
                           color: Color.fromRGBO(137, 71, 184, 1)),
                       title: Text(_people == null ? '0명' : '$_people명',
-                          style:
-                              TextStyle(fontSize: 18, color: Colors.black54)),
+                          style: TextStyle(fontSize: 18, color: Colors.black)),
                       subtitle: Text('인원'),
                       trailing: IconButton(
                         icon: const Icon(Icons.arrow_forward_ios),
@@ -347,15 +316,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateFormat('MM월 dd일').format(_selectedTime == null
                               ? DateTime.now()
                               : _selectedTime),
-                          style:
-                              TextStyle(fontSize: 18, color: Colors.black54)),
+                          style: TextStyle(fontSize: 18, color: Colors.black)),
                       subtitle: Text('예약날짜'),
                       trailing: RaisedButton(
                         onPressed: datePickter,
                         child: const Text(
-                          '예약날짜 선택하기',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13.0),
+                          '예약날짜선택',
+                          style: TextStyle(fontSize: 13.0),
                         ),
                         textColor: Colors.white,
                         color: Color.fromRGBO(168, 114, 207, 1),
@@ -394,14 +361,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   String test = 'test';
                   _inputUser();
                   context.read<FirebaseAuthService>().incrementPeople(_people);
-                  context.read<FirebaseAuthService>().incrementDate(_selectedTime);
+                  context
+                      .read<FirebaseAuthService>()
+                      .incrementDate(_selectedTime);
                   _people = 0;
                   _selectedTime = DateTime.now();
-                  /*Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CheckPage()) //로그인 페이지로 이동
-                      );*/
+
                   _AlertDialog();
                   return;
                 }
@@ -443,10 +408,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(168, 114, 207, 1),
-        //primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: Builder(
             builder: (BuildContext context) {
@@ -466,8 +431,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           title: Text(
             widget.title,
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(fontSize: 19, color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,

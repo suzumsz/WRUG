@@ -16,15 +16,16 @@ class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
+
 String email;
 
 class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
   bool _loggedIn = false; // 로그인 상태
-  String _loginEmail;     // 사용자 이메일
-  String _userName;       // 사용자 이름
-  String _userPhone;      // 사용자 전화번호
-  String _userPeople;     // 인원수
-  String _userDate;       // 예약날짜
+  String _loginEmail; // 사용자 이메일
+  String _userName; // 사용자 이름
+  String _userPhone; // 사용자 전화번호
+  String _userPeople; // 인원수
+  String _userDate; // 예약날짜
   String _townName;
   String _townAddress;
 
@@ -64,24 +65,27 @@ class FirebaseAuthService with ChangeNotifier, DiagnosticableTreeMixin {
     _userDate = null;
     notifyListeners();
   }
-  void incrementPeople(people){
+
+  void incrementPeople(people) {
     _userPeople = '$people';
     notifyListeners();
   }
-  void incrementDate(date){
+
+  void incrementDate(date) {
     _userDate = '$date';
     notifyListeners();
   }
-  void incrementTownName(name){
+
+  void incrementTownName(name) {
     _townName = '$name';
     notifyListeners();
   }
-  void incrementTownAddress(address){
+
+  void incrementTownAddress(address) {
     _townAddress = '$address';
     notifyListeners();
   }
 }
-
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -99,173 +103,168 @@ class _LoginPageState extends State<LoginPage> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('로그인',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyApp()));
-              },
-              color: Colors.black45,
-              icon: Icon(Icons.arrow_back)),
-        ),
-        body: Form(
-            key: _formKey,
-            child: Card(
-                child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 10.0,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text('로그인',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
+                },
+                color: Colors.black45,
+                icon: Icon(Icons.arrow_back)),
+          ),
+          body: Form(
+              key: _formKey,
+              child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                          width: 1000,
+                          child: Text('  이메일',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 17)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: 350.0,
+                          child: TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'example@example.com',
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return '이메일을 확인해 주세요.';
+                              }
+                              return null;
+                            },
                           ),
-                          Container(
-                            width: 1000,
-                            child: Text('  이메일',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 17)),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Container(
+                          width: 1000,
+                          child: Text('  비밀번호',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 17)),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                          width: 350.0,
+                          child: TextFormField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'password',
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return '비밀번호를 확인해 주세요.';
+                              }
+                              return null;
+                            },
+                            obscureText: true,
                           ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 350.0,
-                            child: TextFormField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'example@example.com',
-                              ),
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return '이메일을 확인해 주세요.';
-                                }
-                                return null;
-                              },
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        Container(
+                          width: 350.0,
+                          height: 60.0,
+                          child: RaisedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                _signIn();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyApp()));
+                              }
+                            },
+                            child: Text('로그인',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0)),
+                            textColor: Colors.white,
+                            color: PrimaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Container(
-                            width: 1000,
-                            child: Text('  비밀번호',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 17)),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Container(
-                            width: 350.0,
-                            child: TextFormField(
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'password',
-                              ),
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return '비밀번호를 확인해 주세요.';
-                                }
-                                return null;
-                              },
-                              obscureText: true,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          Container(
-                            width: 350.0,
-                            height: 60.0,
-                            child: RaisedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  _signIn();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyApp())
-                                  );
-                                }
-                              },
-                              child: Text('로그인',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.0)),
-                              textColor: Colors.white,
-                              color: PrimaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
+                        ),
 
-                          // 사용자 로그인 처리 결과
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            child: Column(
+                        // 사용자 로그인 처리 결과
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: <Widget>[
+                              Text(_success == null
+                                  ? ''
+                                  : (_success ? '' : '로그인에 실패하였습니다')),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              //Text(_error == null
+                              //    ? ''
+                              //    : _error),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Container(
+                            width: 1000,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(_success == null
-                                    ? ''
-                                    : (_success ? '' : '로그인에 실패하였습니다')),
-                                SizedBox(
-                                  height: 16,
+                                InkWell(
+                                  child: Text('아직 회원이 아니신가요?   ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 13, color: Colors.black45)),
                                 ),
-                                //Text(_error == null
-                                //    ? ''
-                                //    : _error),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => JoinPage()));
+                                  },
+                                  child: Text('회원가입',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                          color: PrimaryColor)),
+                                )
                               ],
-                            ),
-                          ),
-
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Container(
-                              width: 1000,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  InkWell(
-                                    child: Text('아직 회원이 아니신가요?   ',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.black45)),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  JoinPage()));
-                                    },
-                                    child: Text('회원가입',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                            color: PrimaryColor)),
-                                  )
-                                ],
-                              )),
-                        ])))),
-      ),
+                            )),
+                      ])))),
     );
   }
 
@@ -282,7 +281,8 @@ class _LoginPageState extends State<LoginPage> {
       final User user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      )).user;
+      ))
+          .user;
 
       if (user != null) {
         print('로그인 성공');

@@ -105,206 +105,204 @@ class _JoinPageState extends State<JoinPage> {
         ),
         body: Form(
           key: _formKey,
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: <Widget>[
-                  Container(
-                    width: 1000,
-                    child: Text('이름',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                      controller: _nameController,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter(
-                            RegExp("[a-zA-Z가-하각-힇ㄱ-ㅎㅏ-ㅣ]")),
-                      ],
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "이름을 입력해주세요.",
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return '이름을 입력하세요';
-                        }
-                        name = value;
-                        return null;
-                      },
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              children: <Widget>[
+                Container(
+                  width: 1000,
+                  child: Text('이름',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    controller: _nameController,
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter(
+                          RegExp("[a-zA-Z가-하각-힇ㄱ-ㅎㅏ-ㅣ]")),
+                    ],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "이름을 입력해주세요.",
                     ),
-                    height: 100,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return '이름을 입력하세요';
+                      }
+                      name = value;
+                      return null;
+                    },
                   ),
-                  Container(
-                    width: 1000,
-                    child: Text('생년월일',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                      controller: _birthController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter(RegExp('[0-9]')),
-                      ],
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "ex) 761116",
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return '생년월일을 입력하세요';
-                        }
-                        birth = value;
-                        return null;
-                      },
+                  height: 100,
+                ),
+                Container(
+                  width: 1000,
+                  child: Text('생년월일',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    controller: _birthController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter(RegExp('[0-9]')),
+                    ],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "ex) 761116",
                     ),
-                    height: 100,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return '생년월일을 입력하세요';
+                      }
+                      birth = value;
+                      return null;
+                    },
                   ),
-                  Container(
-                    width: 1000,
-                    child: Text('핸드폰 번호',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter(RegExp('[0-9]')),
-                      ],
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "핸드폰 번호를 입력해주세요.",
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return '핸드폰 번호를 입력하세요';
-                        }
-                        phone = value;
-                        return null;
-                      },
+                  height: 100,
+                ),
+                Container(
+                  width: 1000,
+                  child: Text('핸드폰 번호',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter(RegExp('[0-9]')),
+                    ],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "핸드폰 번호를 입력해주세요.",
                     ),
-                    height: 100,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return '핸드폰 번호를 입력하세요';
+                      }
+                      phone = value;
+                      return null;
+                    },
                   ),
-                  Container(
-                    width: 1000,
-                    child: Text('이메일',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "회원가입할 이메일을 입력해주세요.",
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return '이메일을 입력하세요';
-                        }
-                        email = value;
-                        return null;
-                      },
+                  height: 100,
+                ),
+                Container(
+                  width: 1000,
+                  child: Text('이메일',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "회원가입할 이메일을 입력해주세요.",
                     ),
-                    height: 100,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return '이메일을 입력하세요';
+                      }
+                      email = value;
+                      return null;
+                    },
                   ),
-                  Container(
-                    width: 1000,
-                    child: Text('비밀번호',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
+                  height: 100,
+                ),
+                Container(
+                  width: 1000,
+                  child: Text('비밀번호',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "비밀번호를 입력해주세요.",
+                    ),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return '비밀번호를 입력하세요';
+                      }
+                      password = value;
+                      return null;
+                    },
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                      controller: _passwordController,
+                  height: 100,
+                ),
+                Container(
+                  width: 1000,
+                  child: Text('비밀번호 확인',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                      controller: _password1Controller,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: "비밀번호를 입력해주세요.",
+                        hintText: "비밀번호를 한번 더 입력해주세요.",
                       ),
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return '비밀번호를 입력하세요';
+                          return "비밀번호 확인을 입력하세요";
+                        } else if (password != value) {
+                          return "비밀번호가 일치하지 않습니다";
                         }
-                        password = value;
                         return null;
-                      },
+                      }),
+                  height: 100,
+                ),
+                Container(
+                  //margin: const EdgeInsets.only(top: 16.0),
+                  padding: const EdgeInsets.only(top: 8),
+                  width: 350,
+                  height: 75,
+                  //alignment: Alignment.topCenter,
+                  child: RaisedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _register();
+                        _inputUser();
+                        _inputUsers();
+                        Navigator.push(
+                            //DB처리
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      }
+                    },
+                    child: Text(
+                      '회원가입',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.0),
                     ),
-                    height: 100,
+                    textColor: Colors.white,
+                    color: Color.fromRGBO(168, 114, 207, 1),
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
                   ),
-                  Container(
-                    width: 1000,
-                    child: Text('비밀번호 확인',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 17)),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextFormField(
-                        controller: _password1Controller,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "비밀번호를 한번 더 입력해주세요.",
-                        ),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return "비밀번호 확인을 입력하세요";
-                          } else if (password != value) {
-                            return "비밀번호가 일치하지 않습니다";
-                          }
-                          return null;
-                        }),
-                    height: 100,
-                  ),
-                  Container(
-                    //margin: const EdgeInsets.only(top: 16.0),
-                    padding: const EdgeInsets.only(top: 8),
-                    width: 350,
-                    height: 75,
-                    //alignment: Alignment.topCenter,
-                    child: RaisedButton(
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _register();
-                          _inputUser();
-                          _inputUsers();
-                          Navigator.push(
-                              //DB처리
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
-                        }
-                      },
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
-                      ),
-                      textColor: Colors.white,
-                      color: Color.fromRGBO(168, 114, 207, 1),
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 100.0,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 100.0,
+                ),
+              ],
             ),
           ),
         ),

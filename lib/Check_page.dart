@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           MaterialPageRoute(
                               builder: (context) => ReservationPage()));
                     },
-                    child: Text('예약정보수정', style: TextStyle(fontSize: 13)),
+                    child: Text('예약정보수정', style: TextStyle(fontSize: 14)),
                     textColor: Colors.white,
                     color: Color.fromRGBO(168, 114, 207, 1),
                     shape: RoundedRectangleBorder(
@@ -233,9 +233,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.account_circle,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text(_userName),
+                          title: Text(
+                            _userName,
+                            style: TextStyle(fontSize: 18),
+                          ),
                           subtitle: Text('예약자 이름',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -247,9 +250,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.phone,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text(_userPhone),
+                          title: Text(
+                            _userPhone,
+                            style: TextStyle(fontSize: 18),
+                          ),
                           subtitle: Text('핸드폰',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -261,12 +267,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.calendar_today,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text(_userDate.substring(0, 10)),
-                          /*Text('$date',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),*/
+                          title: Text(
+                            _userDate.substring(0, 10),
+                            style: TextStyle(fontSize: 18),
+                          ),
                           subtitle: Text('날짜',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -278,12 +284,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         ListTile(
                           leading: Icon(Icons.supervisor_account_rounded,
                               color: Color.fromRGBO(137, 71, 184, 1)),
-                          title: Text('$_userPeople명'),
+                          title: Text(
+                            '$_userPeople명',
+                            style: TextStyle(fontSize: 18),
+                          ),
                           /*Text('4명',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black54)),*/
                           subtitle: Text('인원',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -296,10 +305,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           leading: Icon(Icons.check,
                               color: Color.fromRGBO(137, 71, 184, 1)),
                           title: Text('결제완료',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black54)),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black)),
                           subtitle: Text('결제여부',
-                              style: TextStyle(color: Colors.black26)),
+                              style: TextStyle(color: Colors.black54)),
                         ),
                       ],
                     ),
@@ -325,12 +334,10 @@ class _MyHomePageState extends State<MyHomePage> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('예약 확인',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+          title:
+              Text('예약확인', style: TextStyle(fontSize: 19, color: Colors.black)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0.0,
