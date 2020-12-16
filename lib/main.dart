@@ -260,8 +260,19 @@ class _MainPageState extends State<MainPage> {
                 barrierDismissible: true,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('예약후에 이용해주세요'),
-                  );
+                      title: Text('예약 후에 이용해주세요'),
+                      actions: <Widget>[
+                        new FlatButton(
+                          child: new Text("확인",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: PrimaryColor,
+                                  fontWeight: FontWeight.bold)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ]);
                 });
           }
         },

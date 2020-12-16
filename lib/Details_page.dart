@@ -52,9 +52,18 @@ class _DetailsPage extends State<DetailsPage> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('로그인 후 이용해주세요'),
-          );
+          return AlertDialog(title: Text('로그인 후 이용해주세요.'), actions: <Widget>[
+            new FlatButton(
+              child: new Text("확인",
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: PrimaryColor,
+                      fontWeight: FontWeight.bold)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ]);
         });
   }
 
