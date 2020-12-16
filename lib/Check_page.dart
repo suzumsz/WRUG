@@ -328,6 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _userDate = context.watch<FirebaseAuthService>().userDate;
     _userPeople = context.watch<FirebaseAuthService>().userPeople;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.purple,

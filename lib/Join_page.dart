@@ -87,11 +87,8 @@ class _JoinPageState extends State<JoinPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('회원가입',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+          title:
+              Text('회원가입', style: TextStyle(fontSize: 19, color: Colors.black)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0.0,

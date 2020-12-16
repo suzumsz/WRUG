@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'Login_page.dart';
 import 'Reservation_Page.dart';
 import 'main.dart';
-import 'package:badges/badges.dart';
 
 void main() {
   runApp(
@@ -156,6 +155,7 @@ class _DetailsPage extends State<DetailsPage> {
                       future: data2(),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         String townStory = snapshot.data.toString();
+
                         return Text(
                           townStory.substring(60, 85) +
                               '\n' +

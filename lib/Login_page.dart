@@ -107,10 +107,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text('로그인',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
+                style: TextStyle(fontSize: 19, color: Colors.black)),
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0.0,
