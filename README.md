@@ -2,6 +2,16 @@
 ## Where R U Going? 🚗🌳
 > 전국 체험 마을 예약 어플리케이션
 
+```
+
+📌 언택드 관광의 이용률이 증가함에 따라 그에 따른 소비 형태에 걸맞는 어플리케이션입니다.
+
+📌 6차 산업과 ICT를 연결하는 매개체의 역할로 원하는 체험 마을을 찾아 예약할 수 있습니다.
+
+📌 전국의 체험 마을을 한눈에 볼 수 있는 편리한 서비스를 제공합니다.
+
+```
+
 ## TEAM 소개
 👩 김수정 - [suzumsz](https://github.com/suzumsz)    
 👧 한송희 - [Hansongheee](https://github.com/Hansongheee)  
