@@ -32,8 +32,8 @@
 <img width="100%" src="./etc/어디가지구성도.png">
 
 ## 개발환경
-<img src="https://img.shields.io/badge/Flutter-02569B?logo=Flutter&logoColor=white"> <img src="https://img.shields.io/badge/Dart-0175C2?logo=Dart&logoColor=white"> <img src="https://img.shields.io/badge/Authentication-yellow?logo=Firebase&logoColor=white"> <img src="https://img.shields.io/badge/Cloud Firestore-wine?logo=Firebase&logoColor=white">   
-<img src="https://img.shields.io/badge/Android Studio-3DDC84?logo=Android-Studio&logoColor=white"> <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?logo=Visual-Studio-Code&logoColor=white">
+<img src="https://img.shields.io/badge/Flutter-02569B?logo=Flutter&logoColor=white"> <img src="https://img.shields.io/badge/Dart-purple?logo=Dart&logoColor=white"> <img src="https://img.shields.io/badge/Authentication-yellow?logo=Firebase&logoColor=white"> <img src="https://img.shields.io/badge/Cloud Firestore-wine?logo=Firebase&logoColor=white">   
+<img src="https://img.shields.io/badge/Android Studio-000000?logo=Android-Studio&logoColor=white"> <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?logo=Visual-Studio-Code&logoColor=white">
 
 ## 참고
 - 결과물 구동은 [시연동영상](/etc/임베디드소프트웨어응용_어디가지_실행화면.mp4) 참고  
